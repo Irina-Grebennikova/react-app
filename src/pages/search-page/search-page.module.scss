@@ -1,0 +1,13 @@
+@import '@/vars.module.scss';
+
+.searchPage {
+  padding: 8vh 10px 4vh;
+}
+
+.title {
+  font-family: $daysOneFont;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: clamp(22px, 5vw, 35px);
+  color: $darkBlue;
+}

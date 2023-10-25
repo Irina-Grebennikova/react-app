@@ -1,0 +1,97 @@
+@import '@/vars.module.scss';
+
+.logo {
+  padding-top: 5vh;
+  text-align: center;
+
+  img {
+    width: clamp(200px, 30%, 370px);
+  }
+}
+
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px 5px;
+  justify-content: center;
+  margin-top: 5vh;
+}
+
+.inputBox {
+  display: inline-block;
+  position: relative;
+}
+
+.searchInput {
+  min-width: 300px;
+  width: clamp(200px, 48vw, 700px);
+  padding: clamp(5px, 1vw, 10px) clamp(40px, 3vw, 45px);
+  border-radius: 10px;
+  border: 2px solid $blue;
+  font-size: clamp(16px, 3vw, 20px);
+
+  @media (max-width: 550px) {
+    padding: clamp(5px, 1vw, 10px) clamp(30px, 3vw, 45px);
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  left: 15px;
+  top: calc(50% - 10px);
+  height: 20px;
+  color: $grey;
+
+  @media (max-width: 550px) {
+    top: calc(50% - 9px);
+    left: 10px;
+    height: 16px;
+  }
+}
+
+.clearIcon {
+  position: absolute;
+  top: calc(50% - 12px);
+  right: 15px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.2;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: $black;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+
+  @media (max-width: 550px) {
+    right: 10px;
+    width: 16px;
+    height: 16px;
+
+    &::before,
+    &::after {
+      content: '';
+      width: 16px;
+      height: 1.5px;
+    }
+  }
+}
