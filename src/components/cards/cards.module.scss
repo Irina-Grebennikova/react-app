@@ -17,13 +17,14 @@
 }
 
 .nameInfo {
-  margin: 10px 0;
+  margin: 10px 0 5px;
 }
 
 .countryInfo,
 .nameInfo {
   font-family: $daysOneFont;
   font-size: 18px;
+  line-height: 120%;
   color: $darkBlue;
 }
 
