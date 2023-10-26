@@ -1,10 +1,22 @@
 @import '@/vars.module.scss';
 
 .searchPage {
-  padding: 8vh 10px 5vh;
+  padding: 3vh 10px 5vh;
+}
+
+.header {
+  padding-right: clamp(10px, 1vw, 30px);
+  text-align: right;
+}
+
+.errorBtn {
+  padding: 5px 15px;
+  font-size: clamp(14px, 2vw, 16px);
+  border-radius: 7px;
 }
 
 .title {
+  margin-top: 20px;
   font-family: $daysOneFont;
   text-transform: uppercase;
   text-align: center;

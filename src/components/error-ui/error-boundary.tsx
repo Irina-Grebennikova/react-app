@@ -1,5 +1,7 @@
 import { Component, ErrorInfo, PropsWithChildren } from 'react';
 
+import { FallbackUI } from '.';
+
 class ErrorBoundary extends Component<PropsWithChildren> {
   state = {
     hasError: false,
@@ -15,7 +17,7 @@ class ErrorBoundary extends Component<PropsWithChildren> {
 
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return <FallbackUI />;
     }
     return this.props.children;
   }
