@@ -14,7 +14,12 @@ async function getBreeds(breed: string): Promise<Breed[]> {
 }
 
 function isBreedArray(data: unknown): data is Breed[] {
-  return Array.isArray(data) && data.every((item: Breed) => item.whool && item.color && item.group);
+  return (
+    Array.isArray(data) &&
+    data.every((item: Breed) => {
+      return !!(item.wool && item.color && item.group);
+    })
+  );
 }
 
 export { baseUrl, getBreeds };

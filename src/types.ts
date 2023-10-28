@@ -6,7 +6,7 @@ type Breed = {
   lifeSpan: string;
   height: string;
   weight: string;
-  whool: string;
+  wool: string;
   color: string;
   group: string;
   price: string;
