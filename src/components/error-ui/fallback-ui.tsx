@@ -5,7 +5,7 @@ import errorIcon from '@/assets/icons/caution.png';
 import styles from './fallback-ui.module.scss';
 
 class FallbackUI extends Component {
-  render() {
+  render(): JSX.Element {
     return (
       <section className={styles.fallbackUI}>
         <img className={styles.image} src={errorIcon} alt="" />

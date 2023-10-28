@@ -57,7 +57,10 @@
     "curly": ["error", "all"],
     "no-debugger": "off",
     "no-console": "off",
-    "import/order": ["warn", ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"]]
+    "import/order": [
+      "warn",
+      { "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"] }
+    ]
   },
   "ignorePatterns": ["vite.config.ts"]
 }

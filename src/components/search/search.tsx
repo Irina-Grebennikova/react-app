@@ -17,7 +17,7 @@ class Search extends Component<SearchProps> {
   };
 
   async componentDidMount(): Promise<void> {
-    this.props.updateBreeds(this.state.searchQuery.trim());
+    await this.props.updateBreeds(this.state.searchQuery.trim());
   }
 
   render(): JSX.Element {
@@ -48,22 +48,22 @@ class Search extends Component<SearchProps> {
     return newQuery;
   };
 
-  private handleSearchBtnClick = async (): Promise<void> => {
+  private handleSearchBtnClick = (): void => {
     const newQuery = this.state.searchQuery.trim();
     LocalStore.setItem('search-query', newQuery);
-    this.props.updateBreeds(newQuery);
+    void this.props.updateBreeds(newQuery);
   };
 
-  private handleEnterPress = async (e: React.KeyboardEvent<HTMLInputElement>): Promise<void> => {
+  private handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
-      this.handleSearchBtnClick();
+      void this.handleSearchBtnClick();
     }
   };
 
-  private handleClearBtnClick = async (): Promise<void> => {
+  private handleClearBtnClick = (): void => {
     this.setState({ searchQuery: '' });
     LocalStore.removeItem('search-query');
-    this.props.updateBreeds('');
+    void this.props.updateBreeds('');
   };
 }
 

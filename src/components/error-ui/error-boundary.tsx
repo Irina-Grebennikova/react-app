@@ -1,4 +1,4 @@
-import { Component, ErrorInfo, PropsWithChildren } from 'react';
+import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
 
 import { FallbackUI } from '.';
 
@@ -7,15 +7,15 @@ class ErrorBoundary extends Component<PropsWithChildren> {
     hasError: false,
   };
 
-  static getDerivedStateFromError() {
+  static getDerivedStateFromError(): { hasError: true } {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.log(error, errorInfo.componentStack);
   }
 
-  render() {
+  render(): ReactNode {
     if (this.state.hasError) {
       return <FallbackUI />;
     }
