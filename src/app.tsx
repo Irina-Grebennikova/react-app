@@ -1,10 +1,10 @@
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 
-import { ErrorBoundary } from '@/components/error-ui';
+import { ErrorBoundary } from '@/components/ui';
 import { SearchPage } from '@/pages/search-page';
 
 class App extends Component {
-  render(): JSX.Element {
+  render(): ReactNode {
     return (
       <ErrorBoundary>
         <SearchPage />

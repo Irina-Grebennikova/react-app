@@ -1,8 +1,8 @@
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 
 import magnifier from '@/assets/icons/magnifier.svg';
-import { Button } from '@/components/button';
-import { LocalStore } from '@/helpers/local-store';
+import { Button } from '@/components/ui';
+import { LocalStore } from '@/helpers';
 import { Breed } from '@/types';
 
 import styles from './search.module.scss';
@@ -20,7 +20,7 @@ class Search extends Component<SearchProps> {
     await this.props.updateBreeds(this.state.searchQuery.trim());
   }
 
-  render(): JSX.Element {
+  render(): ReactNode {
     return (
       <>
         <div className={styles.search}>

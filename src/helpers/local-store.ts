@@ -1,10 +1,10 @@
 type JSONValue = string | number | boolean | { [x: string]: JSONValue } | JSONValue[];
 
-const prefix = 'breeds';
+const KEY_PREFIX = 'breeds';
 
 class LocalStore {
   public static getItem<T>(key: string): T | null {
-    const value = localStorage.getItem(`${prefix}-${key}`);
+    const value = localStorage.getItem(`${KEY_PREFIX}-${key}`);
 
     if (value === null) {
       return null;
@@ -20,11 +20,11 @@ class LocalStore {
   public static setItem(key: string, value: JSONValue): void {
     const stringValue = JSON.stringify(value);
 
-    localStorage.setItem(`${prefix}-${key}`, stringValue);
+    localStorage.setItem(`${KEY_PREFIX}-${key}`, stringValue);
   }
 
   public static removeItem(key: string): void {
-    localStorage.removeItem(`${prefix}-${key}`);
+    localStorage.removeItem(`${KEY_PREFIX}-${key}`);
   }
 }
 

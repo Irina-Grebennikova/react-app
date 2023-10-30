@@ -1,21 +1,21 @@
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 
-import { baseUrl } from '@/api';
+import { dogBreedsApi } from '@/api/dog-breeds-api';
 import { Breed } from '@/types';
 
-import styles from './cards.module.scss';
+import styles from './dog-breeds-list.module.scss';
 
-type Props = {
+type DogBreedsListItemProps = {
   breed: Breed;
 };
 
-class Card extends Component<Props> {
-  render(): JSX.Element {
+class DogBreedsListItem extends Component<DogBreedsListItemProps> {
+  render(): ReactNode {
     const { breed } = this.props;
 
     return (
       <div className={styles.card}>
-        <img className={styles.image} src={`${baseUrl}/${breed.image}`} width={300} height={300} alt="" />
+        <img className={styles.image} src={dogBreedsApi.getImageSrc(breed.image)} width={300} height={300} alt="" />
         <div className={styles.description}>
           <h3 className={styles.nameInfo}>
             Breed: <span className={styles.name}>{breed.name}</span>
@@ -29,4 +29,4 @@ class Card extends Component<Props> {
   }
 }
 
-export default Card;
+export { DogBreedsListItem };

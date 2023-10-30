@@ -1,19 +1,19 @@
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 
 import noResultsIcon from '@/assets/icons/nothing-found.png';
 import { Loader } from '@/components/loader';
 import { Breed } from '@/types';
 
-import Card from './card';
-import styles from './cards.module.scss';
+import { DogBreedsListItem } from './dog-breeds-list-item';
+import styles from './dog-breeds-list.module.scss';
 
-type Props = {
+type DogBreedsListProps = {
   breeds: Breed[];
   isLoading: boolean;
 };
 
-class Cards extends Component<Props> {
-  render(): JSX.Element {
+class DogBreedsList extends Component<DogBreedsListProps> {
+  render(): ReactNode {
     if (this.props.isLoading) {
       return <Loader className={styles.loader} />;
     } else if (this.props.breeds.length === 0) {
@@ -27,11 +27,11 @@ class Cards extends Component<Props> {
     return (
       <div className={styles.cards}>
         {this.props.breeds.map((breed: Breed) => {
-          return <Card key={breed.id} breed={breed} />;
+          return <DogBreedsListItem key={breed.id} breed={breed} />;
         })}
       </div>
     );
   }
 }
 
-export default Cards;
+export { DogBreedsList };

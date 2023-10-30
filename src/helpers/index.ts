@@ -1,5 +1,2 @@
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-
-export { classNames };
+export { classNames } from './class-names';
+export { LocalStore } from './local-store';
