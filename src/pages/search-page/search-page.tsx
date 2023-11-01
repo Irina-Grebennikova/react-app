@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { dogBreedsApi } from '@/api';
 import { DogBreedsList } from '@/components/dog-breeds-list';
@@ -8,52 +8,40 @@ import { Breed } from '@/types';
 
 import styles from './search-page.module.scss';
 
-type SearchPageState = {
-  breeds: Breed[];
-  isLoading: boolean;
-};
+function SearchPage(): ReactNode {
+  const [breeds, setBreeds] = useState<Breed[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
-class SearchPage extends Component {
-  public state: SearchPageState = {
-    breeds: [],
-    isLoading: true,
-  };
+  useEffect(() => {
+    if (hasError) {
+      throw new Error('Error button is clicked');
+    }
+  }, [hasError]);
 
-  render(): ReactNode {
-    return (
-      <div className={styles.searchPage}>
-        <header className={styles.header}>
-          <Button className={styles.errorBtn} color={'red'} onClick={this.throwError.bind(this)}>
-            Error
-          </Button>
-        </header>
-        <h1 className={styles.title}>Dog breeds</h1>
-        <Search updateBreeds={this.updateBreeds.bind(this)} />
-        <DogBreedsList breeds={this.state.breeds} isLoading={this.state.isLoading} />
-      </div>
-    );
-  }
+  async function updateBreeds(query: string): Promise<Breed[]> {
+    setIsLoading(() => true);
 
-  private async updateBreeds(query: string): Promise<Breed[]> {
-    this.setState(() => {
-      return { isLoading: true };
-    });
     const breeds = await dogBreedsApi.getBreeds(query);
-    this.setState(() => {
-      return { breeds, isLoading: false };
-    });
+
+    setBreeds(breeds);
+    setIsLoading(() => false);
+
     return breeds;
   }
 
-  private throwError(): void {
-    try {
-      throw new Error();
-    } catch {
-      this.setState(() => {
-        throw new Error('Error button is clicked');
-      });
-    }
-  }
+  return (
+    <div className={styles.searchPage}>
+      <header className={styles.header}>
+        <Button className={styles.errorBtn} color={'red'} onClick={(): void => setHasError(true)}>
+          Error
+        </Button>
+      </header>
+      <h1 className={styles.title}>Dog breeds</h1>
+      <Search updateBreeds={updateBreeds} />
+      <DogBreedsList breeds={breeds} isLoading={isLoading} />
+    </div>
+  );
 }
 
 export { SearchPage };
