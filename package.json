@@ -15,7 +15,7 @@
     "lintstaged": "lint-staged --relative"
   },
   "lint-staged": {
-    "*.ts, *.tsx": [
+    "*.{ts,tsx}": [
       "eslint --fix"
     ],
     "*.scss": [
