@@ -1,12 +1,13 @@
 import { ReactNode } from 'react';
+import { RouterProvider } from 'react-router-dom';
 
 import { ErrorBoundary } from '@/components/ui';
-import { SearchPage } from '@/pages/search-page';
+import { router } from '@/router';
 
 function App(): ReactNode {
   return (
     <ErrorBoundary>
-      <SearchPage />
+      <RouterProvider router={router} />
     </ErrorBoundary>
   );
 }

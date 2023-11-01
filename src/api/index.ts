@@ -1,1 +1,1 @@
-export { dogBreedsApi } from './dog-breeds-api';
+export { dogBreedsApi, BREEDS_PER_PAGE } from './dog-breeds-api';

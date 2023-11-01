@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
@@ -8,16 +8,12 @@ import { Breed } from '@/types';
 import styles from './search.module.scss';
 
 type SearchProps = {
-  updateBreeds: (query: string) => Promise<Breed[]>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  updateBreeds: (query: string, page?: number) => Promise<Breed[]>;
 };
 
-function Search({ updateBreeds }: SearchProps): ReactNode {
-  const [searchQuery, setSearchQuery] = useState(LocalStore.getItem<string>('search-query') || '');
-
-  useEffect(() => {
-    void updateBreeds(searchQuery.trim());
-  }, []);
-
+function Search({ searchQuery, setSearchQuery, updateBreeds }: SearchProps): ReactNode {
   function updateSearchQuery(e: React.ChangeEvent<HTMLInputElement>): string {
     const newQuery = e.target.value;
     setSearchQuery(newQuery);
@@ -27,7 +23,7 @@ function Search({ updateBreeds }: SearchProps): ReactNode {
   function handleSearchBtnClick(): void {
     const newQuery = searchQuery.trim();
     LocalStore.setItem('search-query', newQuery);
-    void updateBreeds(newQuery);
+    void updateBreeds(newQuery, 1);
   }
 
   function handleEnterPress(e: React.KeyboardEvent<HTMLInputElement>): void {
@@ -39,7 +35,7 @@ function Search({ updateBreeds }: SearchProps): ReactNode {
   function handleClearBtnClick(): void {
     setSearchQuery('');
     LocalStore.removeItem('search-query');
-    void updateBreeds('');
+    void updateBreeds('', 1);
   }
 
   return (
