@@ -5,9 +5,9 @@ const BREEDS_PER_PAGE = 12;
 
 const dogBreedsApi = {
   totalCount: 0,
-  async getBreeds(breed: string, page = 1): Promise<Breed[]> {
+  async getBreeds(breed: string, page = 1, limit = BREEDS_PER_PAGE): Promise<Breed[]> {
     try {
-      const response = await fetch(`${BASE_URL}/api/catalog?q=${breed}&_limit=${BREEDS_PER_PAGE}&_page=${page}`);
+      const response = await fetch(`${BASE_URL}/api/catalog?q=${breed}&_limit=${limit}&_page=${page}`);
       this.totalCount = Number(response.headers.get('X-Total-Count'));
 
       const data: unknown = await response.json();
