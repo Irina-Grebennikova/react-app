@@ -11,9 +11,12 @@ type SearchProps = {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   updateBreeds: (query: string, page?: number) => Promise<Breed[]>;
+  showBreedsFromFirstPage: () => void;
 };
 
-function Search({ searchQuery, setSearchQuery, updateBreeds }: SearchProps): ReactNode {
+function Search(props: SearchProps): ReactNode {
+  const { searchQuery, setSearchQuery, showBreedsFromFirstPage, updateBreeds } = props;
+
   function updateSearchQuery(e: React.ChangeEvent<HTMLInputElement>): string {
     const newQuery = e.target.value;
     setSearchQuery(newQuery);
@@ -23,7 +26,7 @@ function Search({ searchQuery, setSearchQuery, updateBreeds }: SearchProps): Rea
   function handleSearchBtnClick(): void {
     const newQuery = searchQuery.trim();
     LocalStore.setItem('search-query', newQuery);
-    void updateBreeds(newQuery, 1);
+    showBreedsFromFirstPage();
   }
 
   function handleEnterPress(e: React.KeyboardEvent<HTMLInputElement>): void {

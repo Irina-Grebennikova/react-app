@@ -2,6 +2,7 @@ import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { BREEDS_PER_PAGE, dogBreedsApi } from '@/api';
+import { BreedsPerPageInput } from '@/components/breeds-per-page-input';
 import { DogBreedsList } from '@/components/dog-breeds-list';
 import { Search } from '@/components/search';
 import { Button } from '@/components/ui';
@@ -48,38 +49,47 @@ function SearchPage(): ReactNode {
     setBreeds(breeds);
     setIsLoading(() => false);
     setCurrentPage(page);
-    setPageCount(Math.ceil(dogBreedsApi.totalCount / breedsPerPage));
+    setPageCount(Math.ceil(dogBreedsApi.totalCount / itemsPerPage));
 
     return breeds;
   }
 
   function onBreedsPerPageChange(e: ChangeEvent<HTMLInputElement>): void {
-    const newBreedsPerPage = Number(e.target.value);
+    const { value } = e.target;
+    if (+value < 1 || +value > dogBreedsApi.totalCount) {
+      return;
+    }
+    const newBreedsPerPage = +value;
     setBreedsPerPage(newBreedsPerPage);
-    void updateBreeds(searchQuery.trim(), 1, newBreedsPerPage);
+    showBreedsFromFirstPage(newBreedsPerPage);
+  }
+
+  function showBreedsFromFirstPage(itemsPerPage = breedsPerPage): void {
+    setSearchParams({ page: '1' });
+    if (currentPage === 1) {
+      void updateBreeds(searchQuery.trim(), 1, itemsPerPage);
+    }
   }
 
   return (
     <div className={styles.searchPage}>
       <header className={styles.header}>
-        <label className={styles.breedsCountLabel} htmlFor="breedsPerPage">
-          Breeds per page:
-          <input
-            className={styles.breedsCountInput}
-            id="breedsPerPage"
-            type="number"
-            value={breedsPerPage}
-            min={1}
-            max={dogBreedsApi.totalCount}
-            onChange={onBreedsPerPageChange}
-          />
-        </label>
+        <BreedsPerPageInput
+          breedsPerPage={breedsPerPage}
+          totalCount={dogBreedsApi.totalCount}
+          handleChange={onBreedsPerPageChange}
+        />
         <Button className={styles.errorBtn} color={'red'} onClick={(): void => setHasError(true)}>
           Error
         </Button>
       </header>
       <h1 className={styles.title}>Dog breeds</h1>
-      <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} updateBreeds={updateBreeds} />
+      <Search
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        updateBreeds={updateBreeds}
+        showBreedsFromFirstPage={showBreedsFromFirstPage}
+      />
       <DogBreedsList breeds={breeds} isLoading={isLoading} />
       {!isLoading && breeds.length > 0 && <Pagination currentPage={currentPage} pageCount={pageCount} />}
     </div>

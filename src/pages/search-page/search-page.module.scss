@@ -12,28 +12,10 @@
   text-align: right;
 }
 
-.breedsCountLabel,
-.breedsCountInput,
-.errorBtn {
-  font-size: clamp(14px, 2vw, 16px);
-}
-
-.breedsCountLabel {
-  font-family: $daysOneFont;
-  color: $darkBlue;
-}
-
-.breedsCountInput {
-  margin-left: 10px;
-  padding: 5px;
-  border: 2px solid $blue;
-  border-radius: 7px;
-  text-align: center;
-}
-
 .errorBtn {
   padding: 5px 15px;
   border-radius: 7px;
+  font-size: clamp(14px, 2vw, 16px);
 }
 
 .title {
