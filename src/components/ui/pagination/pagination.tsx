@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 import { classNames } from '@/helpers';
 
@@ -6,36 +7,30 @@ import styles from './pagination.module.scss';
 
 type PaginationProps = {
   currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   pageCount: number;
 };
 
 function Pagination(props: PaginationProps): ReactNode {
-  const { currentPage, setCurrentPage, pageCount } = props;
-
-  const goToFirstPage = (): void => setCurrentPage(1);
-  const goToPrevPage = (): void => setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
-  const goToNextPage = (): void => setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
-  const goToLastPage = (): void => setCurrentPage(pageCount);
+  const { currentPage, pageCount } = props;
 
   const isFirstPage = (): boolean => currentPage === 1;
   const isLastPage = (): boolean => currentPage === pageCount;
 
   return (
     <div className={styles.pagination}>
-      <button className={classNames(styles.button, isFirstPage() ? styles.inactive : '')} onClick={goToFirstPage}>
+      <Link to={`?page=1`} className={classNames(styles.button, isFirstPage() ? styles.inactive : '')}>
         {'<<'}
-      </button>
-      <button className={classNames(styles.button, isFirstPage() ? styles.inactive : '')} onClick={goToPrevPage}>
+      </Link>
+      <Link to={`?page=${currentPage - 1}`} className={classNames(styles.button, isFirstPage() ? styles.inactive : '')}>
         {'<'}
-      </button>
+      </Link>
       <div className={classNames(styles.button, styles.current)}>{currentPage}</div>
-      <button className={classNames(styles.button, isLastPage() ? styles.inactive : '')} onClick={goToNextPage}>
+      <Link to={`?page=${currentPage + 1}`} className={classNames(styles.button, isLastPage() ? styles.inactive : '')}>
         {'>'}
-      </button>
-      <button className={classNames(styles.button, isLastPage() ? styles.inactive : '')} onClick={goToLastPage}>
+      </Link>
+      <Link to={`/?page=${pageCount}`} className={classNames(styles.button, isLastPage() ? styles.inactive : '')}>
         {'>>'}
-      </button>
+      </Link>
     </div>
   );
 }

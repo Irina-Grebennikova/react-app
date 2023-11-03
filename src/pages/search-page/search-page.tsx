@@ -19,8 +19,8 @@ function SearchPage(): ReactNode {
   const [breeds, setBreeds] = useState<Breed[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
   const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (hasError) {
@@ -29,9 +29,16 @@ function SearchPage(): ReactNode {
   }, [hasError]);
 
   useEffect(() => {
-    setSearchParams({ page: String(currentPage) });
-    void updateBreeds(searchQuery.trim());
-  }, [currentPage]);
+    const page = searchParams.get('page');
+
+    if (page === null) {
+      setSearchParams({ page: '1' });
+    }
+    const newCurrentPage = Number(page) || 1;
+
+    setCurrentPage(newCurrentPage);
+    void updateBreeds(searchQuery.trim(), newCurrentPage);
+  }, [searchParams]);
 
   async function updateBreeds(query: string, page = currentPage, itemsPerPage = breedsPerPage): Promise<Breed[]> {
     setIsLoading(() => true);
@@ -74,9 +81,7 @@ function SearchPage(): ReactNode {
       <h1 className={styles.title}>Dog breeds</h1>
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} updateBreeds={updateBreeds} />
       <DogBreedsList breeds={breeds} isLoading={isLoading} />
-      {!isLoading && breeds.length > 0 && (
-        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageCount={pageCount} />
-      )}
+      {!isLoading && breeds.length > 0 && <Pagination currentPage={currentPage} pageCount={pageCount} />}
     </div>
   );
 }
