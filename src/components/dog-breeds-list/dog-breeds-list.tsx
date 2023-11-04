@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 import noResultsIcon from '@/assets/icons/nothing-found.png';
-import { Loader } from '@/components/loader';
+import { Loader } from '@/components/ui';
 import { Breed } from '@/types';
 
 import { DogBreedsListItem } from './dog-breeds-list-item';

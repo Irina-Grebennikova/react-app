@@ -1,6 +1,19 @@
 @import '@/vars.module.scss';
 
+.wrapper {
+  display: flex;
+  gap: 30px;
+
+  &.noScroll {
+    @media (max-width: 730px) {
+      height: 100vh;
+      overflow: hidden;
+    }
+  }
+}
+
 .searchPage {
+  flex: auto;
   padding: 3vh 10px 5vh;
 }
 

@@ -17,13 +17,22 @@ const dogBreedsApi = {
       return [];
     }
   },
+  async getBreed(breedId: number): Promise<Breed | null> {
+    try {
+      const response = await fetch(`${BASE_URL}/api/catalog/${breedId}`);
+
+      const data: unknown = await response.json();
+      return this.isBreedObject(data) ? data : null;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
   isBreedArray(data: unknown): data is Breed[] {
-    return (
-      Array.isArray(data) &&
-      data.every((item: Breed) => {
-        return !!(item.wool && item.color && item.group);
-      })
-    );
+    return Array.isArray(data) && data.every((item: unknown) => this.isBreedObject(item));
+  },
+  isBreedObject(data: unknown): data is Breed {
+    return !!(data as Breed).wool && !!(data as Breed).color && !!(data as Breed).group;
   },
   getImageSrc: (pathToImage: string): string => `${BASE_URL}/${pathToImage}`,
 };

@@ -9,6 +9,8 @@ type BreedsPerPageInputProps = {
 };
 
 function BreedsPerPageInput({ breedsPerPage, totalCount, handleChange }: BreedsPerPageInputProps): ReactNode {
+  const value = breedsPerPage < totalCount ? breedsPerPage : totalCount;
+
   return (
     <label className={styles.breedsCountLabel} htmlFor="breeds-per-page">
       Breeds per page:
@@ -16,7 +18,7 @@ function BreedsPerPageInput({ breedsPerPage, totalCount, handleChange }: BreedsP
         className={styles.breedsCountInput}
         id="breeds-per-page"
         type="number"
-        value={breedsPerPage}
+        value={value}
         min={1}
         max={totalCount}
         onChange={handleChange}
