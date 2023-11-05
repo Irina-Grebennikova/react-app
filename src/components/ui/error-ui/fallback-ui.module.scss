@@ -1,0 +1,36 @@
+@import '@/vars.module.scss';
+
+.fallbackUI {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  padding: 20px;
+  color: $white;
+  background: url('../../../assets/images/error-bg.webp') no-repeat 0 0 / cover;
+}
+
+.image {
+  width: clamp(100px, 20%, 150px);
+}
+
+.title {
+  margin-top: 7vh;
+  font-family: $daysOneFont;
+  font-size: clamp(28px, 5vw, 42px);
+}
+
+.message {
+  margin-top: 3vh;
+  font-family: $daysOneFont;
+  line-height: 120%;
+  font-size: clamp(18px, 3vw, 30px);
+}
+
+.advice {
+  margin-top: 3vh;
+  font-style: italic;
+  font-size: clamp(14px, 2vw, 20px);
+}

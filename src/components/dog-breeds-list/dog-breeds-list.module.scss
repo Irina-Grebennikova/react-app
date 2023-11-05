@@ -1,0 +1,59 @@
+@import '@/vars.module.scss';
+
+.card {
+  max-width: 306px;
+  padding-bottom: 15px;
+  border: 3px solid $blue;
+  border-radius: 10px;
+}
+
+.image {
+  border-radius: 10px 10px 0 0;
+  object-fit: cover;
+}
+
+.description {
+  padding: 0 clamp(5px, 1vw, 10px);
+}
+
+.nameInfo {
+  margin: 10px 0 5px;
+}
+
+.countryInfo,
+.nameInfo {
+  font-family: $daysOneFont;
+  font-size: 18px;
+  line-height: 120%;
+  color: $darkBlue;
+}
+
+.name,
+.country {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: $robotoFont;
+  color: $black;
+}
+
+.cards {
+  display: flex;
+  gap: 2vw;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 5vh;
+}
+
+.noResults {
+  display: flex;
+  gap: clamp(5px, 1vw, 10px);
+  align-items: center;
+  justify-content: center;
+  margin-top: 10vh;
+  color: $grey;
+  font-size: clamp(20px, 4vw, 30px);
+}
+
+.loader {
+  padding-top: 12vh;
+}
