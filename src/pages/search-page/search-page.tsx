@@ -30,7 +30,9 @@ function SearchPage(): ReactElement {
   const getClassForWrapper = (): string => classNames(styles.wrapper, isDetailsOpen ? styles.noScroll : '');
 
   const store = {
+    breeds,
     breedId,
+    searchQuery,
     currentPage,
     isDetailsOpen,
     setBreedId,
@@ -111,12 +113,11 @@ function SearchPage(): ReactElement {
           </header>
           <h1 className={styles.title}>Dog breeds</h1>
           <Search
-            searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             updateBreeds={updateBreeds}
             showBreedsFromFirstPage={showBreedsFromFirstPage}
           />
-          <DogBreedsList breeds={breeds} isLoading={isLoading} />
+          <DogBreedsList isLoading={isLoading} />
           {!isLoading && breeds.length > 0 && <Pagination currentPage={currentPage} pageCount={pageCount} />}
         </div>
         <Outlet />

@@ -1,21 +1,23 @@
-import { Dispatch, ReactElement } from 'react';
+import { Dispatch, ReactElement, useContext } from 'react';
 
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
 import { LocalStore } from '@/helpers';
+import { SearchPageContext } from '@/pages/search-page';
 import { Breed } from '@/types';
 
 import styles from './search.module.scss';
 
 type SearchProps = {
-  searchQuery: string;
   setSearchQuery: Dispatch<React.SetStateAction<string>>;
   updateBreeds: (query: string, page?: number) => Promise<Breed[]>;
   showBreedsFromFirstPage: () => void;
 };
 
 function Search(props: SearchProps): ReactElement {
-  const { searchQuery, setSearchQuery, showBreedsFromFirstPage, updateBreeds } = props;
+  const { setSearchQuery, showBreedsFromFirstPage, updateBreeds } = props;
+
+  const { searchQuery } = useContext(SearchPageContext);
 
   function handleSearchBtnClick(): void {
     const newQuery = searchQuery.trim();

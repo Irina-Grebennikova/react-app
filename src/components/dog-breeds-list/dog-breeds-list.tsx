@@ -1,18 +1,20 @@
-import { ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 
 import noResultsIcon from '@/assets/icons/nothing-found.png';
 import { Loader } from '@/components/ui';
+import { SearchPageContext } from '@/pages/search-page';
 import { Breed } from '@/types';
 
 import { DogBreedsListItem } from './dog-breeds-list-item/dog-breeds-list-item';
 import styles from './dog-breeds-list.module.scss';
 
 type DogBreedsListProps = {
-  breeds: Breed[];
   isLoading: boolean;
 };
 
-function DogBreedsList({ breeds, isLoading }: DogBreedsListProps): ReactElement {
+function DogBreedsList({ isLoading }: DogBreedsListProps): ReactElement {
+  const { breeds } = useContext(SearchPageContext);
+
   if (isLoading) {
     return <Loader className={styles.loader} />;
   }
