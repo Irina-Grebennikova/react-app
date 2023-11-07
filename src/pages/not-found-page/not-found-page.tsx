@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
 import dogImage from '@/assets/images/puppy.jpg';
@@ -6,7 +6,7 @@ import { Button } from '@/components/ui';
 
 import styles from './not-found-page.module.scss';
 
-function NotFoundPage(): ReactNode {
+function NotFoundPage(): ReactElement {
   return (
     <div className={styles.wrapper}>
       <div className={styles.error}>

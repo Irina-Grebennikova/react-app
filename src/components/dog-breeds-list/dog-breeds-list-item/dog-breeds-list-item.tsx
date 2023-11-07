@@ -1,18 +1,17 @@
-import { ReactNode, useContext } from 'react';
+import { ReactElement, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { dogBreedsApi } from '@/api/dog-breeds-api';
 import { LocalStore, classNames } from '@/helpers';
 import { SearchPageContext } from '@/pages/search-page';
 import { Breed } from '@/types';
 
-import styles from './dog-breeds-list.module.scss';
+import styles from './dog-breeds-list-item.module.scss';
 
 type DogBreedsListItemProps = {
   breed: Breed;
 };
 
-function DogBreedsListItem({ breed }: DogBreedsListItemProps): ReactNode {
+function DogBreedsListItem({ breed }: DogBreedsListItemProps): ReactElement {
   const { currentPage, isDetailsOpen, breedId, setBreedId } = useContext(SearchPageContext);
 
   const getClassForCard = (): string =>
@@ -32,7 +31,7 @@ function DogBreedsListItem({ breed }: DogBreedsListItemProps): ReactNode {
       className={getClassForCard()}
       onClick={handleListItemClick}
     >
-      <img className={styles.image} src={dogBreedsApi.getImageSrc(breed.image)} width={300} height={300} alt="" />
+      <img className={styles.image} src={breed.image} width={300} height={300} alt="" />
       <div className={styles.description}>
         <h3 className={styles.nameInfo}>
           Breed: <span className={styles.name}>{breed.name}</span>

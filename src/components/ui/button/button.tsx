@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 import { classNames } from '@/helpers';
 
@@ -11,7 +11,7 @@ type ButtonProps = {
   children?: ReactNode;
 };
 
-function Button(props: ButtonProps): ReactNode {
+function Button(props: ButtonProps): ReactElement {
   const { color = 'blue', className = '', onClick, children } = props;
 
   return (

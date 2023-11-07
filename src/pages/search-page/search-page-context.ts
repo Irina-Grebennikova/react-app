@@ -1,11 +1,11 @@
-import { createContext } from 'react';
+import { Dispatch, createContext } from 'react';
 
 type SearchPageContextType = {
   breedId: number;
   currentPage: number;
   isDetailsOpen: boolean;
-  setBreedId: React.Dispatch<React.SetStateAction<number>>;
-  setIsDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setBreedId: Dispatch<React.SetStateAction<number>>;
+  setIsDetailsOpen: Dispatch<React.SetStateAction<boolean>>;
 };
 
 const SearchPageContext = createContext<SearchPageContextType>({

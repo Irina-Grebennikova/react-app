@@ -12,4 +12,9 @@ type Breed = {
   price: string;
 };
 
-export type { Breed };
+type BreedResponse = {
+  results: Breed[];
+  totalCount: number;
+}
+
+export type { Breed, BreedResponse };

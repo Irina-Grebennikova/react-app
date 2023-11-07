@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { Dispatch, ReactElement } from 'react';
 
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
@@ -9,19 +9,13 @@ import styles from './search.module.scss';
 
 type SearchProps = {
   searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  setSearchQuery: Dispatch<React.SetStateAction<string>>;
   updateBreeds: (query: string, page?: number) => Promise<Breed[]>;
   showBreedsFromFirstPage: () => void;
 };
 
-function Search(props: SearchProps): ReactNode {
+function Search(props: SearchProps): ReactElement {
   const { searchQuery, setSearchQuery, showBreedsFromFirstPage, updateBreeds } = props;
-
-  function updateSearchQuery(e: React.ChangeEvent<HTMLInputElement>): string {
-    const newQuery = e.target.value;
-    setSearchQuery(newQuery);
-    return newQuery;
-  }
 
   function handleSearchBtnClick(): void {
     const newQuery = searchQuery.trim();
@@ -50,7 +44,7 @@ function Search(props: SearchProps): ReactNode {
             className={styles.searchInput}
             placeholder="Example: pug, labrador"
             value={searchQuery}
-            onChange={updateSearchQuery}
+            onChange={(e): void => setSearchQuery(e.target.value)}
             onKeyDown={handleEnterPress}
             autoFocus
           />

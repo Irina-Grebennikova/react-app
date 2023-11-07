@@ -17,8 +17,6 @@ function DogBreedDetails(): JSX.Element {
 
   const infoPanel = useRef<HTMLDivElement>(null);
 
-  const imageSrc = dogBreedsApi.getImageSrc(breed?.image || '');
-
   useEffect(() => {
     setIsDetailsOpen(true);
 
@@ -55,7 +53,7 @@ function DogBreedDetails(): JSX.Element {
         ) : (
           <div className={styles.content}>
             <h1 className={styles.name}>{breed?.name}</h1>
-            <img className={styles.image} src={imageSrc} alt="" width={300} height={300} />
+            <img className={styles.image} src={breed?.image} alt="" width={300} height={300} />
             <div className={styles.details}>
               <p className={styles.detailsLine}>
                 <span className={styles.label}>Country:</span> {breed?.country}

@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 
 import errorIcon from '@/assets/icons/caution.png';
 
-import styles from './fallback-ui.module.scss';
+import styles from './fallback.module.scss';
 
-function FallbackUI(): ReactNode {
+function FallbackUI(): ReactElement {
   return (
     <section className={styles.fallbackUI}>
       <img className={styles.image} src={errorIcon} alt="" />

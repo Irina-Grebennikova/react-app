@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 
 import { BREEDS_PER_PAGE, dogBreedsApi } from '@/api';
@@ -13,13 +13,14 @@ import { Breed } from '@/types';
 import { SearchPageContext } from './search-page-context';
 import styles from './search-page.module.scss';
 
-function SearchPage(): ReactNode {
+function SearchPage(): ReactElement {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [searchQuery, setSearchQuery] = useState(LocalStore.getItem<string>('search-query') || '');
   const [breedsPerPage, setBreedsPerPage] = useState(BREEDS_PER_PAGE);
   const [breeds, setBreeds] = useState<Breed[]>([]);
   const [breedId, setBreedId] = useState(Number(LocalStore.getItem('breed-id')) || 0);
+  const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [pageCount, setPageCount] = useState(0);
@@ -64,12 +65,15 @@ function SearchPage(): ReactNode {
   async function updateBreeds(query: string, page = currentPage, itemsPerPage = breedsPerPage): Promise<Breed[]> {
     setIsLoading(() => true);
 
-    const breeds = await dogBreedsApi.getBreeds(query, page, itemsPerPage);
+    const response = await dogBreedsApi.getBreeds(query, page, itemsPerPage);
+    const breeds = response?.results || [];
+    const nextTotalCount = response?.totalCount || 0;
 
     setBreeds(breeds);
     setIsLoading(() => false);
     setCurrentPage(page);
-    setPageCount(Math.ceil(dogBreedsApi.totalCount / itemsPerPage));
+    setTotalCount(nextTotalCount);
+    setPageCount(Math.ceil(nextTotalCount / itemsPerPage));
 
     return breeds;
   }
@@ -98,7 +102,7 @@ function SearchPage(): ReactNode {
           <header className={styles.header}>
             <BreedsPerPageInput
               breedsPerPage={breedsPerPage}
-              totalCount={dogBreedsApi.totalCount}
+              totalCount={totalCount}
               handleChange={onBreedsPerPageChange}
             />
             <Button className={styles.errorBtn} color={'red'} onClick={(): void => setHasError(true)}>
