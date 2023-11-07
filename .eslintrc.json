@@ -62,5 +62,5 @@
       { "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"] }
     ]
   },
-  "ignorePatterns": ["vite.config.ts"]
+  "ignorePatterns": ["vite.config.ts", "jest.config.ts"]
 }
