@@ -9,7 +9,10 @@ type SearchPageContextType = {
   currentPage: number;
   isDetailsOpen: boolean;
   setBreedId: Dispatch<React.SetStateAction<number>>;
+  setSearchQuery: Dispatch<React.SetStateAction<string>>;
   setIsDetailsOpen: Dispatch<React.SetStateAction<boolean>>;
+  updateBreeds: (query: string, page?: number) => Promise<Breed[]>;
+  showBreedsFromFirstPage: () => void;
 };
 
 const SearchPageContext = createContext<SearchPageContextType>({
@@ -19,7 +22,10 @@ const SearchPageContext = createContext<SearchPageContextType>({
   currentPage: 0,
   isDetailsOpen: false,
   setBreedId: () => {},
+  setSearchQuery: () => {},
   setIsDetailsOpen: () => {},
+  updateBreeds: () => Promise.resolve([]),
+  showBreedsFromFirstPage: () => {},
 });
 
 export { SearchPageContext };

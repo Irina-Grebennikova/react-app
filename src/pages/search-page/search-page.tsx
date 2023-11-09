@@ -36,7 +36,10 @@ function SearchPage(): ReactElement {
     currentPage,
     isDetailsOpen,
     setBreedId,
+    setSearchQuery,
     setIsDetailsOpen,
+    updateBreeds,
+    showBreedsFromFirstPage,
   };
 
   useEffect(() => {
@@ -112,11 +115,7 @@ function SearchPage(): ReactElement {
             </Button>
           </header>
           <h1 className={styles.title}>Dog breeds</h1>
-          <Search
-            setSearchQuery={setSearchQuery}
-            updateBreeds={updateBreeds}
-            showBreedsFromFirstPage={showBreedsFromFirstPage}
-          />
+          <Search />
           <DogBreedsList isLoading={isLoading} />
           {!isLoading && breeds.length > 0 && <Pagination currentPage={currentPage} pageCount={pageCount} />}
         </div>
