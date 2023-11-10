@@ -16,7 +16,7 @@ const getValueFromLocalStorage = (key: string): string | null => {
   return localStorage.getItem(`${KEY_PREFIX}-${key}`);
 };
 
-function SearchProvider({ children }: { children: ReactElement }): ReactElement {
+function SearchPageProvider({ children }: { children: ReactElement }): ReactElement {
   const [searchQuery, setSearchQuery] = useState(getValueFromLocalStorage('search-query') || '');
 
   return (
@@ -36,9 +36,9 @@ function SearchProvider({ children }: { children: ReactElement }): ReactElement 
 describe('Search', () => {
   it('clicking the Search button saves the entered value to the local storage', async () => {
     render(
-      <SearchProvider>
+      <SearchPageProvider>
         <Search />
-      </SearchProvider>
+      </SearchPageProvider>
     );
     const typedValue = 'pug';
     const input = screen.getByRole('textbox');
@@ -57,9 +57,9 @@ describe('Search', () => {
     localStorage.setItem(`${KEY_PREFIX}-search-query`, searchQuery);
 
     render(
-      <SearchProvider>
+      <SearchPageProvider>
         <Search />
-      </SearchProvider>
+      </SearchPageProvider>
     );
 
     const input = screen.getByRole('textbox');
