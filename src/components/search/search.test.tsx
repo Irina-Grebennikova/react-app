@@ -15,6 +15,16 @@ const getValueFromLocalStorage = (key: string): string | null => {
   return localStorage.getItem(`${KEY_PREFIX}-${key}`);
 };
 
+const setValueToLocalStorage = (key: string, value: string): void => {
+  return localStorage.setItem(`${KEY_PREFIX}-${key}`, value);
+};
+
+const user = userEvent.setup();
+
+afterEach(() => {
+  localStorage.clear();
+});
+
 function SearchPageProvider({ children }: { children: ReactElement }): ReactElement {
   const [searchQuery, setSearchQuery] = useState(getValueFromLocalStorage('search-query') || '');
 
@@ -43,8 +53,8 @@ describe('Search', () => {
     const input = screen.getByRole('textbox');
     const SearchButton = screen.getByRole('button', { name: /search/i });
 
-    await userEvent.type(input, typedValue);
-    await userEvent.click(SearchButton);
+    await user.type(input, typedValue);
+    await user.click(SearchButton);
 
     const savedValue = getValueFromLocalStorage('search-query');
 
@@ -53,7 +63,7 @@ describe('Search', () => {
 
   it('component retrieves the value from the local storage upon mounting', () => {
     const searchQuery = 'labrador';
-    localStorage.setItem(`${KEY_PREFIX}-search-query`, searchQuery);
+    setValueToLocalStorage('search-query', searchQuery);
 
     render(
       <SearchPageProvider>
@@ -64,5 +74,28 @@ describe('Search', () => {
     const input = screen.getByRole('textbox');
 
     expect(input).toHaveValue(searchQuery);
+  });
+
+  it('clicking the clear button removes the value from the local storage and input', async () => {
+    const searchQuery = 'rottweiler';
+    setValueToLocalStorage('search-query', searchQuery);
+
+    render(
+      <SearchPageProvider>
+        <Search />
+      </SearchPageProvider>
+    );
+
+    const clearButton = screen.getByTestId('clear-button');
+    const input = screen.getByRole('textbox');
+
+    expect(input).toHaveValue(searchQuery);
+
+    await user.click(clearButton);
+
+    const valueInLS = getValueFromLocalStorage('search-query');
+
+    expect(valueInLS).toBe(null);
+    expect(input).toHaveValue('');
   });
 });
