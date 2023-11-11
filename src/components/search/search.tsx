@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { ReactElement, SyntheticEvent, useContext } from 'react';
 
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
@@ -10,16 +10,12 @@ import styles from './search.module.scss';
 function Search(): ReactElement {
   const { searchQuery, setSearchQuery, showBreedsFromFirstPage, updateBreeds } = useContext(SearchPageContext);
 
-  function handleSearchBtnClick(): void {
+  function handleSubmit(e: SyntheticEvent): void {
+    e.preventDefault();
+
     const newQuery = searchQuery.trim();
     LocalStore.setItem('search-query', newQuery);
     showBreedsFromFirstPage();
-  }
-
-  function handleEnterPress(e: React.KeyboardEvent<HTMLInputElement>): void {
-    if (e.key === 'Enter') {
-      void handleSearchBtnClick();
-    }
   }
 
   function handleClearBtnClick(): void {
@@ -30,7 +26,7 @@ function Search(): ReactElement {
 
   return (
     <>
-      <div className={styles.search}>
+      <form className={styles.search} onSubmit={handleSubmit}>
         <div className={styles.inputBox}>
           <img className={styles.searchIcon} src={magnifier} alt="Search"></img>
           <input
@@ -38,13 +34,12 @@ function Search(): ReactElement {
             placeholder="Example: pug, labrador"
             value={searchQuery}
             onChange={(e): void => setSearchQuery(e.target.value)}
-            onKeyDown={handleEnterPress}
             autoFocus
           />
-          <div className={styles.clearIcon} onClick={handleClearBtnClick}></div>
+          <div className={styles.clearIcon} onClick={handleClearBtnClick} data-testid="clear-button"></div>
         </div>
-        <Button onClick={handleSearchBtnClick}>Search</Button>
-      </div>
+        <Button type="submit">Search</Button>
+      </form>
     </>
   );
 }
