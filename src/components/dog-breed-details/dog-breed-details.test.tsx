@@ -2,8 +2,7 @@ import { render, screen, waitForElementToBeRemoved } from '@testing-library/reac
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Routes } from 'react-router-dom';
 
-import { mockApiData } from '__mocks__/mock-api-data';
-
+import { mockApiData } from '@/__mocks__/mock-api-data';
 import { routes } from '@/router';
 
 import { DogBreedDetails } from './dog-breed-details';

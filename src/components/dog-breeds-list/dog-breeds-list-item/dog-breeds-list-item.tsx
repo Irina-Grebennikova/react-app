@@ -30,6 +30,7 @@ function DogBreedsListItem({ breed }: DogBreedsListItemProps): ReactElement {
       to={`/details/?id=${breed.id}&page=${currentPage}`}
       className={getClassForCard()}
       onClick={handleListItemClick}
+      data-testid={`card-${breed.id}`}
     >
       <img className={styles.image} src={breed.image} width={300} height={300} alt="" />
       <div className={styles.description}>

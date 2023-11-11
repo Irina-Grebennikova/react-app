@@ -44,4 +44,4 @@ const dogBreedsApi = {
   },
 };
 
-export { dogBreedsApi, BREEDS_PER_PAGE };
+export { dogBreedsApi, BREEDS_PER_PAGE, BASE_URL };

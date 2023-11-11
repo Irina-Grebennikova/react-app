@@ -2,9 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { mockApiData } from '__mocks__/mock-api-data';
-import { MockSearchPageContext } from '__mocks__/mock-search-page-context';
-
+import { mockApiData } from '@/__mocks__/mock-api-data';
+import { MockSearchPageContext } from '@/__mocks__/mock-search-page-context';
 import { Breed } from '@/types';
 
 import { DogBreedsList } from './dog-breeds-list';
