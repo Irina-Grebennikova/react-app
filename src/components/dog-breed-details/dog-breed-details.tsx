@@ -45,7 +45,7 @@ function DogBreedDetails(): JSX.Element {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <aside className={styles.wrapper}>
       <section className={styles.characterInfo} ref={infoPanel}>
         {!isOpen && <Navigate to={'/'} />}
         {isLoading ? (
@@ -76,11 +76,11 @@ function DogBreedDetails(): JSX.Element {
             </div>
           </div>
         )}
-        <div className={styles.closeItem} onClick={closeSidePanel}>
-          <div className={styles.closeIcon}></div>
-        </div>
+        <button className={styles.closeItem} onClick={closeSidePanel}>
+          <span className={styles.closeIcon}></span>
+        </button>
       </section>
-    </div>
+    </aside>
   );
 }
 

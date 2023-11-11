@@ -10,7 +10,7 @@ const dogBreedsApi = {
   async getBreeds(breed: string, page = 1, limit = BREEDS_PER_PAGE): Promise<BreedResponse | null> {
     try {
       const response = await fetch(`${BASE_URL}/api/catalog?q=${breed}&_limit=${limit}&_page=${page}`);
-      const totalCount = Number(response.headers.get('X-Total-Count'));
+      const totalCount = Number(response.headers?.get('X-Total-Count')) || 1;
       const data: unknown = await response.json();
       const results = this.isBreedArray(data)
         ? data.map((item: Breed) => ({ ...item, image: getImageSrc(item.image) }))
