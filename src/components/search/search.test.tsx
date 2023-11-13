@@ -46,7 +46,7 @@ describe('Search', () => {
   it('clicking the Search button saves the entered value to the local storage', async () => {
     render(
       <SearchPageProvider>
-        <Search />
+        <Search updateBreeds={jest.fn()} showBreedsFromFirstPage={jest.fn()} />
       </SearchPageProvider>
     );
     const typedValue = 'pug';
@@ -67,7 +67,7 @@ describe('Search', () => {
 
     render(
       <SearchPageProvider>
-        <Search />
+        <Search updateBreeds={jest.fn()} showBreedsFromFirstPage={jest.fn()} />
       </SearchPageProvider>
     );
 
@@ -82,7 +82,7 @@ describe('Search', () => {
 
     render(
       <SearchPageProvider>
-        <Search />
+        <Search updateBreeds={jest.fn()} showBreedsFromFirstPage={jest.fn()} />
       </SearchPageProvider>
     );
 

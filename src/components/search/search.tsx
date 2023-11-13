@@ -1,14 +1,24 @@
-import { ReactElement, SyntheticEvent, useContext } from 'react';
+import { ChangeEvent, ReactElement, SyntheticEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
 import { LocalStore } from '@/helpers';
-import { SearchPageContext } from '@/pages/search-page';
+import { setSearchQuery } from '@/redux/searchSlice';
+import { RootState } from '@/redux/store';
+import { Breed } from '@/types';
 
 import styles from './search.module.scss';
 
-function Search(): ReactElement {
-  const { searchQuery, setSearchQuery, showBreedsFromFirstPage, updateBreeds } = useContext(SearchPageContext);
+type SearchProps = {
+  showBreedsFromFirstPage: (itemsPerPage?: number) => void;
+  updateBreeds: (query: string, page?: number, itemsPerPage?: number) => Promise<Breed[]>;
+};
+
+function Search({ showBreedsFromFirstPage, updateBreeds }: SearchProps): ReactElement {
+  const { searchQuery } = useSelector((state: RootState) => state.search);
+
+  const dispatch = useDispatch();
 
   function handleSubmit(e: SyntheticEvent): void {
     e.preventDefault();
@@ -19,10 +29,12 @@ function Search(): ReactElement {
   }
 
   function handleClearBtnClick(): void {
-    setSearchQuery('');
+    dispatch(setSearchQuery(''));
     LocalStore.removeItem('search-query');
     void updateBreeds('', 1);
   }
+
+  const onSearchQueryChange = (e: ChangeEvent<HTMLInputElement>): void => void dispatch(setSearchQuery(e.target.value));
 
   return (
     <>
@@ -33,7 +45,7 @@ function Search(): ReactElement {
             className={styles.searchInput}
             placeholder="Example: pug, labrador"
             value={searchQuery}
-            onChange={(e): void => setSearchQuery(e.target.value)}
+            onChange={onSearchQueryChange}
             autoFocus
           />
           <div className={styles.clearIcon} onClick={handleClearBtnClick} data-testid="clear-button"></div>

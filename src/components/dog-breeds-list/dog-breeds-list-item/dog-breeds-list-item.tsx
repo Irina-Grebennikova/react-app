@@ -1,8 +1,10 @@
-import { ReactElement, useContext } from 'react';
+import { ReactElement } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { LocalStore, classNames } from '@/helpers';
-import { SearchPageContext } from '@/pages/search-page';
+import { setBreedId } from '@/redux/searchSlice';
+import { RootState } from '@/redux/store';
 import { Breed } from '@/types';
 
 import styles from './dog-breeds-list-item.module.scss';
@@ -12,7 +14,9 @@ type DogBreedsListItemProps = {
 };
 
 function DogBreedsListItem({ breed }: DogBreedsListItemProps): ReactElement {
-  const { currentPage, isDetailsOpen, breedId, setBreedId } = useContext(SearchPageContext);
+  const { isDetailsOpen, breedId, currentPage } = useSelector((state: RootState) => state.search);
+
+  const dispatch = useDispatch();
 
   const getClassForCard = (): string =>
     classNames(styles.card, isDetailsOpen && breedId === breed.id ? styles.activeCard : '');
@@ -22,7 +26,7 @@ function DogBreedsListItem({ breed }: DogBreedsListItemProps): ReactElement {
       e.stopPropagation();
     }
     LocalStore.setItem('breed-id', String(breed.id));
-    setBreedId(breed.id);
+    dispatch(setBreedId(breed.id));
   }
 
   return (

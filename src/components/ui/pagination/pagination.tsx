@@ -1,17 +1,19 @@
 import { ReactElement } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { classNames } from '@/helpers';
+import { RootState } from '@/redux/store';
 
 import styles from './pagination.module.scss';
 
 type PaginationProps = {
-  currentPage: number;
   pageCount: number;
 };
 
 function Pagination(props: PaginationProps): ReactElement {
-  const { currentPage, pageCount } = props;
+  const { pageCount } = props;
+  const { currentPage } = useSelector((state: RootState) => state.search);
 
   const isFirstPage = (): boolean => currentPage === 1;
   const isLastPage = (): boolean => currentPage === pageCount;
