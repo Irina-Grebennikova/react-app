@@ -7,7 +7,7 @@ const initialState = {
   breedId: Number(LocalStore.getItem('breed-id')) || 0,
   breedsPerPage: BREEDS_PER_PAGE,
   searchQuery: LocalStore.getItem<string>('search-query') || '',
-  currentPage: 0,
+  currentPage: Number(LocalStore.getItem('current-page')) || 1,
   isDetailsOpen: false,
 };
 

@@ -2,20 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { dogBreedsApi } from '@/api';
+import { useGetBreedQuery } from '@/api';
 import { Loader } from '@/components/ui';
-import { setIsDetailsOpen } from '@/redux/searchSlice';
-import { RootState } from '@/redux/store';
-import { Breed } from '@/types';
+import { RootState, setIsDetailsOpen } from '@/store';
 
 import styles from './dog-breed-details.module.scss';
 
 function DogBreedDetails(): JSX.Element {
   const { breedId } = useSelector((state: RootState) => state.search);
 
-  const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
-  const [breed, setBreed] = useState<Breed>();
+
+  const { data: breed, isLoading } = useGetBreedQuery(breedId);
 
   const infoPanel = useRef<HTMLDivElement>(null);
 
@@ -26,12 +24,6 @@ function DogBreedDetails(): JSX.Element {
 
     document.addEventListener('click', handleOutsideClick);
 
-    void dogBreedsApi.getBreed(breedId).then((breed) => {
-      if (breed) {
-        setBreed(breed);
-        setIsLoading(false);
-      }
-    });
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };

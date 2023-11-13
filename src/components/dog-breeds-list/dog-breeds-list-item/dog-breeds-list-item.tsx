@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { LocalStore, classNames } from '@/helpers';
-import { setBreedId } from '@/redux/searchSlice';
-import { RootState } from '@/redux/store';
+import { RootState, setBreedId } from '@/store';
 import { Breed } from '@/types';
 
 import styles from './dog-breeds-list-item.module.scss';

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { classNames } from '@/helpers';
-import { RootState } from '@/redux/store';
+import { RootState } from '@/store';
 
 import styles from './pagination.module.scss';
 

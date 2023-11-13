@@ -1,40 +1,38 @@
-import { ChangeEvent, ReactElement, SyntheticEvent } from 'react';
+import { ReactElement, SyntheticEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
 import { LocalStore } from '@/helpers';
-import { setSearchQuery } from '@/redux/searchSlice';
-import { RootState } from '@/redux/store';
-import { Breed } from '@/types';
+import { RootState, setSearchQuery } from '@/store';
 
 import styles from './search.module.scss';
 
 type SearchProps = {
-  showBreedsFromFirstPage: (itemsPerPage?: number) => void;
-  updateBreeds: (query: string, page?: number, itemsPerPage?: number) => Promise<Breed[]>;
+  setFirstPage: () => void;
 };
 
-function Search({ showBreedsFromFirstPage, updateBreeds }: SearchProps): ReactElement {
+function Search({ setFirstPage }: SearchProps): ReactElement {
   const { searchQuery } = useSelector((state: RootState) => state.search);
 
   const dispatch = useDispatch();
 
+  const [query, setQuery] = useState(searchQuery);
+
   function handleSubmit(e: SyntheticEvent): void {
     e.preventDefault();
 
-    const newQuery = searchQuery.trim();
+    const newQuery = query.trim();
     LocalStore.setItem('search-query', newQuery);
-    showBreedsFromFirstPage();
+    dispatch(setSearchQuery(newQuery));
+    setFirstPage();
   }
 
   function handleClearBtnClick(): void {
+    setQuery('');
     dispatch(setSearchQuery(''));
     LocalStore.removeItem('search-query');
-    void updateBreeds('', 1);
   }
-
-  const onSearchQueryChange = (e: ChangeEvent<HTMLInputElement>): void => void dispatch(setSearchQuery(e.target.value));
 
   return (
     <>
@@ -44,8 +42,8 @@ function Search({ showBreedsFromFirstPage, updateBreeds }: SearchProps): ReactEl
           <input
             className={styles.searchInput}
             placeholder="Example: pug, labrador"
-            value={searchQuery}
-            onChange={onSearchQueryChange}
+            value={query}
+            onChange={(e): void => setQuery(e.target.value)}
             autoFocus
           />
           <div className={styles.clearIcon} onClick={handleClearBtnClick} data-testid="clear-button"></div>

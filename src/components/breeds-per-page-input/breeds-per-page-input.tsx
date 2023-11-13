@@ -1,18 +1,14 @@
 import { ChangeEvent, ReactElement } from 'react';
-import { useSelector } from 'react-redux';
-
-import { RootState } from '@/redux/store';
 
 import styles from './breeds-per-page-input.module.scss';
 
 type BreedsPerPageInputProps = {
+  breedsPerPage: number;
   totalCount: number;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-function BreedsPerPageInput({ totalCount, handleChange }: BreedsPerPageInputProps): ReactElement {
-  const { breedsPerPage } = useSelector((state: RootState) => state.search);
-
+function BreedsPerPageInput({ breedsPerPage, totalCount, handleChange }: BreedsPerPageInputProps): ReactElement {
   const value = breedsPerPage < totalCount ? breedsPerPage : totalCount;
 
   return (

@@ -2,8 +2,8 @@ import { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 
-import { store } from '@/redux/store';
 import { router } from '@/router';
+import { store } from '@/store';
 
 function App(): ReactElement {
   return (
