@@ -9,11 +9,11 @@ import { RootState, setIsDetailsOpen } from '@/store';
 import styles from './dog-breed-details.module.scss';
 
 function DogBreedDetails(): JSX.Element {
-  const { breedId } = useSelector((state: RootState) => state.search);
+  const { breedId, isDetailsLoading: isLoading } = useSelector((state: RootState) => state.search);
 
   const [isOpen, setIsOpen] = useState(true);
 
-  const { data: breed, isLoading } = useGetBreedQuery(breedId);
+  const { data: breed } = useGetBreedQuery(breedId);
 
   const infoPanel = useRef<HTMLDivElement>(null);
 

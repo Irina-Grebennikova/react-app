@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { dogBreedsApiSlice } from '@/api';
+import { dogBreedsApi } from '@/api';
 
 import { searchReducer } from './search-slice';
 
 const store = configureStore({
   reducer: {
     search: searchReducer,
-    [dogBreedsApiSlice.reducerPath]: dogBreedsApiSlice.reducer,
+    [dogBreedsApi.reducerPath]: dogBreedsApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(dogBreedsApiSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(dogBreedsApi.middleware),
 });
 
 export { store };

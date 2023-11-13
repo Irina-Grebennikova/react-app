@@ -18,9 +18,15 @@ function SearchPage(): ReactElement {
 
   const [hasError, setHasError] = useState(false);
 
-  const { breedsPerPage, searchQuery, currentPage, isDetailsOpen } = useSelector((state: RootState) => state.search);
+  const {
+    breedsPerPage,
+    searchQuery,
+    currentPage,
+    isDetailsOpen,
+    isBreedsLoading: isLoading,
+  } = useSelector((state: RootState) => state.search);
 
-  const { data: response, isFetching } = useGetBreedsQuery({
+  const { data: response } = useGetBreedsQuery({
     query: searchQuery,
     page: currentPage,
     limit: breedsPerPage,
@@ -80,8 +86,8 @@ function SearchPage(): ReactElement {
         </header>
         <h1 className={styles.title}>Dog breeds</h1>
         <Search setFirstPage={setFirstPage} />
-        {<DogBreedsList isLoading={isFetching} breeds={breeds} />}
-        {!isFetching && breeds.length > 0 && <Pagination pageCount={pageCount} />}
+        {<DogBreedsList isLoading={isLoading} breeds={breeds} />}
+        {!isLoading && breeds.length > 0 && <Pagination pageCount={pageCount} />}
       </div>
       <Outlet />
     </div>

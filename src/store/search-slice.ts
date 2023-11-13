@@ -1,6 +1,6 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
-import { BREEDS_PER_PAGE } from '@/api';
+import { BREEDS_PER_PAGE, dogBreedsApi } from '@/api';
 import { LocalStore } from '@/helpers';
 
 const initialState = {
@@ -9,6 +9,8 @@ const initialState = {
   searchQuery: LocalStore.getItem<string>('search-query') || '',
   currentPage: Number(LocalStore.getItem('current-page')) || 1,
   isDetailsOpen: false,
+  isBreedsLoading: false,
+  isDetailsLoading: false,
 };
 
 const searchSlice = createSlice({
@@ -30,6 +32,23 @@ const searchSlice = createSlice({
     setIsDetailsOpen(state, action: PayloadAction<boolean>) {
       state.isDetailsOpen = action.payload;
     },
+  },
+  extraReducers(builder) {
+    const { getBreeds, getBreed } = dogBreedsApi.endpoints;
+
+    builder
+      .addMatcher(getBreeds.matchPending, (state) => {
+        state.isBreedsLoading = true;
+      })
+      .addMatcher(isAnyOf(getBreeds.matchFulfilled, getBreeds.matchRejected), (state) => {
+        state.isBreedsLoading = false;
+      })
+      .addMatcher(getBreed.matchPending, (state) => {
+        state.isDetailsLoading = true;
+      })
+      .addMatcher(isAnyOf(getBreed.matchFulfilled, getBreed.matchRejected), (state) => {
+        state.isDetailsLoading = false;
+      });
   },
 });
 

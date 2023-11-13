@@ -13,7 +13,7 @@ type GetBreedsQueryArg = {
   limit?: number;
 };
 
-const dogBreedsApiSlice = createApi({
+const dogBreedsApi = createApi({
   reducerPath: 'dogBreedsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
@@ -40,5 +40,5 @@ const dogBreedsApiSlice = createApi({
   }),
 });
 
-export { BASE_URL, BREEDS_PER_PAGE, dogBreedsApiSlice };
-export const { useGetBreedsQuery, useGetBreedQuery } = dogBreedsApiSlice;
+export { BASE_URL, BREEDS_PER_PAGE, dogBreedsApi };
+export const { useGetBreedsQuery, useGetBreedQuery } = dogBreedsApi;
