@@ -6,4 +6,5 @@ export {
   setSearchQuery,
   setCurrentPage,
   setIsDetailsOpen,
+  selectFromSearch,
 } from './search-slice';

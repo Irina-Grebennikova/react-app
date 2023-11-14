@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { LocalStore, classNames } from '@/helpers';
-import { RootState, setBreedId } from '@/store';
+import { selectFromSearch, setBreedId } from '@/store';
 import { Breed } from '@/types';
 
 import styles from './dog-breeds-list-item.module.scss';
@@ -13,7 +13,7 @@ type DogBreedsListItemProps = {
 };
 
 function DogBreedsListItem({ breed }: DogBreedsListItemProps): ReactElement {
-  const { isDetailsOpen, breedId, currentPage } = useSelector((state: RootState) => state.search);
+  const { isDetailsOpen, breedId, currentPage } = useSelector(selectFromSearch);
 
   const dispatch = useDispatch();
 

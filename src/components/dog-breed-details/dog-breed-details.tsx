@@ -4,12 +4,12 @@ import { Navigate } from 'react-router-dom';
 
 import { useGetBreedQuery } from '@/api';
 import { Loader } from '@/components/ui';
-import { RootState, setIsDetailsOpen } from '@/store';
+import { selectFromSearch, setIsDetailsOpen } from '@/store';
 
 import styles from './dog-breed-details.module.scss';
 
 function DogBreedDetails(): JSX.Element {
-  const { breedId, isDetailsLoading: isLoading } = useSelector((state: RootState) => state.search);
+  const { breedId, isDetailsLoading: isLoading } = useSelector(selectFromSearch);
 
   const [isOpen, setIsOpen] = useState(true);
 
