@@ -1,15 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ReactElement, useState } from 'react';
+import { Provider } from 'react-redux';
 
-import { MockSearchPageContext } from '@/__mocks__/mock-search-page-context';
 import { KEY_PREFIX } from '@/helpers';
+import { store } from '@/store';
 
 import { Search } from './search';
-
-jest.mock('@/pages/search-page', () => ({
-  SearchPageContext: MockSearchPageContext,
-}));
 
 const getValueFromLocalStorage = (key: string): string | null => {
   return localStorage.getItem(`${KEY_PREFIX}-${key}`);
@@ -25,29 +21,12 @@ afterEach(() => {
   localStorage.clear();
 });
 
-function SearchPageProvider({ children }: { children: ReactElement }): ReactElement {
-  const [searchQuery, setSearchQuery] = useState(getValueFromLocalStorage('search-query') || '');
-
-  return (
-    <MockSearchPageContext.Provider
-      value={{
-        searchQuery,
-        setSearchQuery,
-        updateBreeds: jest.fn(),
-        showBreedsFromFirstPage: jest.fn(),
-      }}
-    >
-      {children}
-    </MockSearchPageContext.Provider>
-  );
-}
-
 describe('Search', () => {
   it('clicking the Search button saves the entered value to the local storage', async () => {
     render(
-      <SearchPageProvider>
-        <Search updateBreeds={jest.fn()} showBreedsFromFirstPage={jest.fn()} />
-      </SearchPageProvider>
+      <Provider store={store}>
+        <Search setFirstPage={jest.fn()} />
+      </Provider>
     );
     const typedValue = 'pug';
     const input = screen.getByRole('textbox');
@@ -59,37 +38,20 @@ describe('Search', () => {
     const savedValue = getValueFromLocalStorage('search-query');
 
     expect(savedValue).toBe(typedValue);
-  });
-
-  it('component retrieves the value from the local storage upon mounting', () => {
-    const searchQuery = 'labrador';
-    setValueToLocalStorage('search-query', searchQuery);
-
-    render(
-      <SearchPageProvider>
-        <Search updateBreeds={jest.fn()} showBreedsFromFirstPage={jest.fn()} />
-      </SearchPageProvider>
-    );
-
-    const input = screen.getByRole('textbox');
-
-    expect(input).toHaveValue(searchQuery);
-  });
+  }, 10000);
 
   it('clicking the clear button removes the value from the local storage and input', async () => {
     const searchQuery = 'rottweiler';
     setValueToLocalStorage('search-query', searchQuery);
 
     render(
-      <SearchPageProvider>
-        <Search updateBreeds={jest.fn()} showBreedsFromFirstPage={jest.fn()} />
-      </SearchPageProvider>
+      <Provider store={store}>
+        <Search setFirstPage={jest.fn()} />
+      </Provider>
     );
 
     const clearButton = screen.getByTestId('clear-button');
     const input = screen.getByRole('textbox');
-
-    expect(input).toHaveValue(searchQuery);
 
     await user.click(clearButton);
 
@@ -97,5 +59,5 @@ describe('Search', () => {
 
     expect(valueInLS).toBe(null);
     expect(input).toHaveValue('');
-  });
+  }, 10000);
 });

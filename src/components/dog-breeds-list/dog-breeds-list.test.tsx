@@ -1,43 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import { ReactElement, ReactNode } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { ReactElement } from 'react';
 
 import { mockApiData } from '@/__mocks__/mock-api-data';
-import { MockSearchPageContext } from '@/__mocks__/mock-search-page-context';
-import { Breed } from '@/types';
 
 import { DogBreedsList } from './dog-breeds-list';
 
-jest.mock('@/pages/search-page', () => ({
-  SearchPageContext: MockSearchPageContext,
+jest.mock('./dog-breeds-list-item/dog-breeds-list-item', () => ({
+  DogBreedsListItem: (): ReactElement => <a href="" />,
 }));
-
-type SearchPageProviderProps = {
-  breeds: Breed[];
-  children: ReactNode;
-};
-
-function SearchPageProvider({ breeds, children }: SearchPageProviderProps): ReactElement {
-  return (
-    <MockSearchPageContext.Provider
-      value={{
-        breeds,
-      }}
-    >
-      {children}
-    </MockSearchPageContext.Provider>
-  );
-}
 
 describe('DogBreedsList', () => {
   it('renders the specified number of cards', () => {
-    render(
-      <BrowserRouter>
-        <SearchPageProvider breeds={mockApiData}>
-          <DogBreedsList isLoading={false} />
-        </SearchPageProvider>
-      </BrowserRouter>
-    );
+    render(<DogBreedsList isLoading={false} breeds={mockApiData} />);
 
     const cards = screen.getAllByRole('link');
 
@@ -45,13 +19,7 @@ describe('DogBreedsList', () => {
   });
 
   it('appropriate message is displayed if no cards are present', () => {
-    render(
-      <BrowserRouter>
-        <SearchPageProvider breeds={[]}>
-          <DogBreedsList isLoading={false} />
-        </SearchPageProvider>
-      </BrowserRouter>
-    );
+    render(<DogBreedsList isLoading={false} breeds={[]} />);
 
     expect(screen.getByText(/No results found/i)).toBeInTheDocument();
   });

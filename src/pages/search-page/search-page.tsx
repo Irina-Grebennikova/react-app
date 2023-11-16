@@ -87,7 +87,7 @@ function SearchPage(): ReactElement {
         <h1 className={styles.title}>Dog breeds</h1>
         <Search setFirstPage={setFirstPage} />
         {<DogBreedsList isLoading={isLoading} breeds={breeds} />}
-        {!isLoading && breeds.length > 0 && <Pagination pageCount={pageCount} />}
+        {!isLoading && breeds.length > 0 && <Pagination pageCount={pageCount} currentPage={currentPage} />}
       </div>
       <Outlet />
     </div>
