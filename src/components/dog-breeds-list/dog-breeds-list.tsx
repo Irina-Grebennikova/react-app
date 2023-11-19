@@ -1,28 +1,33 @@
-import { ReactNode } from 'react';
+import { ReactElement, useContext } from 'react';
 
 import noResultsIcon from '@/assets/icons/nothing-found.png';
 import { Loader } from '@/components/ui';
+import { SearchPageContext } from '@/pages/search-page';
 import { Breed } from '@/types';
 
-import { DogBreedsListItem } from './dog-breeds-list-item';
+import { DogBreedsListItem } from './dog-breeds-list-item/dog-breeds-list-item';
 import styles from './dog-breeds-list.module.scss';
 
 type DogBreedsListProps = {
-  breeds: Breed[];
   isLoading: boolean;
 };
 
-function DogBreedsList({ breeds, isLoading }: DogBreedsListProps): ReactNode {
+function DogBreedsList({ isLoading }: DogBreedsListProps): ReactElement {
+  const { breeds } = useContext(SearchPageContext);
+
   if (isLoading) {
     return <Loader className={styles.loader} />;
-  } else if (breeds.length === 0) {
+  }
+
+  if (breeds.length === 0) {
     return (
       <div className={styles.noResults}>
         No results found
-        <img className={styles.noResultsIcon} src={noResultsIcon} alt="" />
+        <img src={noResultsIcon} alt="" />
       </div>
     );
   }
+
   return (
     <div className={styles.cards}>
       {breeds.map((breed: Breed) => {

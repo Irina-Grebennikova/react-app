@@ -3,7 +3,7 @@ type Breed = {
   name: string;
   image: string;
   country: string;
-  lifeSpan: string;
+  lifespan: string;
   height: string;
   weight: string;
   wool: string;
@@ -12,4 +12,9 @@ type Breed = {
   price: string;
 };
 
-export type { Breed };
+type BreedResponse = {
+  results: Breed[];
+  totalCount: number;
+};
+
+export type { Breed, BreedResponse };

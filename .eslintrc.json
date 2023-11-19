@@ -12,6 +12,8 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -25,7 +27,7 @@
     "project": ["./tsconfig.json"]
   },
   // Configuring third-party plugins
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "react-refresh"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "react-refresh", "testing-library", "jest-dom"],
   // Resolve imports
   "settings": {
     "import/resolver": {
@@ -62,5 +64,5 @@
       { "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"] }
     ]
   },
-  "ignorePatterns": ["vite.config.ts"]
+  "ignorePatterns": ["vite.config.ts", "jest.config.ts"]
 }

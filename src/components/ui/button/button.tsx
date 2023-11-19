@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 import { classNames } from '@/helpers';
 
@@ -9,13 +9,14 @@ type ButtonProps = {
   className?: string;
   onClick?: () => void;
   children?: ReactNode;
+  type?: 'submit' | 'button';
 };
 
-function Button(props: ButtonProps): ReactNode {
-  const { color = 'blue', className = '', onClick, children } = props;
+function Button(props: ButtonProps): ReactElement {
+  const { color = 'blue', className = '', onClick, children, type = 'button' } = props;
 
   return (
-    <button className={classNames(styles[`${color}Button`], className)} onClick={onClick}>
+    <button className={classNames(styles[`${color}Button`], className)} onClick={onClick} type={type}>
       {children}
     </button>
   );

@@ -1,12 +1,12 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 
 import { classNames } from '@/helpers';
 
 import styles from './loader.module.scss';
 
-function Loader({ className = '' }): ReactNode {
+function Loader({ className = '' }): ReactElement {
   return (
-    <div className={classNames(styles.loader, className)}>
+    <div className={classNames(styles.loader, className)} role="status">
       <div className={styles.ldsRipple}>
         <div></div>
         <div></div>

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
 import { classNames } from '@/helpers';
@@ -10,7 +10,7 @@ type PaginationProps = {
   pageCount: number;
 };
 
-function Pagination(props: PaginationProps): ReactNode {
+function Pagination(props: PaginationProps): ReactElement {
   const { currentPage, pageCount } = props;
 
   const isFirstPage = (): boolean => currentPage === 1;

@@ -17,8 +17,6 @@ function DogBreedDetails(): JSX.Element {
 
   const infoPanel = useRef<HTMLDivElement>(null);
 
-  const imageSrc = dogBreedsApi.getImageSrc(breed?.image || '');
-
   useEffect(() => {
     setIsDetailsOpen(true);
 
@@ -47,7 +45,7 @@ function DogBreedDetails(): JSX.Element {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <aside className={styles.wrapper}>
       <section className={styles.characterInfo} ref={infoPanel}>
         {!isOpen && <Navigate to={'/'} />}
         {isLoading ? (
@@ -55,7 +53,7 @@ function DogBreedDetails(): JSX.Element {
         ) : (
           <div className={styles.content}>
             <h1 className={styles.name}>{breed?.name}</h1>
-            <img className={styles.image} src={imageSrc} alt="" width={300} height={300} />
+            <img className={styles.image} src={breed?.image} alt="" width={300} height={300} />
             <div className={styles.details}>
               <p className={styles.detailsLine}>
                 <span className={styles.label}>Country:</span> {breed?.country}
@@ -78,11 +76,11 @@ function DogBreedDetails(): JSX.Element {
             </div>
           </div>
         )}
-        <div className={styles.closeItem} onClick={closeSidePanel}>
-          <div className={styles.closeIcon}></div>
-        </div>
+        <button className={styles.closeItem} onClick={closeSidePanel}>
+          <span className={styles.closeIcon}></span>
+        </button>
       </section>
-    </div>
+    </aside>
   );
 }
 

@@ -1,2 +1,2 @@
 export { classNames } from './class-names';
-export { LocalStore } from './local-store';
+export { LocalStore, KEY_PREFIX } from './local-store';

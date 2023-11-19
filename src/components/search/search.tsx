@@ -1,38 +1,21 @@
-import { ReactNode } from 'react';
+import { ReactElement, SyntheticEvent, useContext } from 'react';
 
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
 import { LocalStore } from '@/helpers';
-import { Breed } from '@/types';
+import { SearchPageContext } from '@/pages/search-page';
 
 import styles from './search.module.scss';
 
-type SearchProps = {
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  updateBreeds: (query: string, page?: number) => Promise<Breed[]>;
-  showBreedsFromFirstPage: () => void;
-};
+function Search(): ReactElement {
+  const { searchQuery, setSearchQuery, showBreedsFromFirstPage, updateBreeds } = useContext(SearchPageContext);
 
-function Search(props: SearchProps): ReactNode {
-  const { searchQuery, setSearchQuery, showBreedsFromFirstPage, updateBreeds } = props;
+  function handleSubmit(e: SyntheticEvent): void {
+    e.preventDefault();
 
-  function updateSearchQuery(e: React.ChangeEvent<HTMLInputElement>): string {
-    const newQuery = e.target.value;
-    setSearchQuery(newQuery);
-    return newQuery;
-  }
-
-  function handleSearchBtnClick(): void {
     const newQuery = searchQuery.trim();
     LocalStore.setItem('search-query', newQuery);
     showBreedsFromFirstPage();
-  }
-
-  function handleEnterPress(e: React.KeyboardEvent<HTMLInputElement>): void {
-    if (e.key === 'Enter') {
-      void handleSearchBtnClick();
-    }
   }
 
   function handleClearBtnClick(): void {
@@ -43,21 +26,20 @@ function Search(props: SearchProps): ReactNode {
 
   return (
     <>
-      <div className={styles.search}>
+      <form className={styles.search} onSubmit={handleSubmit}>
         <div className={styles.inputBox}>
           <img className={styles.searchIcon} src={magnifier} alt="Search"></img>
           <input
             className={styles.searchInput}
             placeholder="Example: pug, labrador"
             value={searchQuery}
-            onChange={updateSearchQuery}
-            onKeyDown={handleEnterPress}
+            onChange={(e): void => setSearchQuery(e.target.value)}
             autoFocus
           />
-          <div className={styles.clearIcon} onClick={handleClearBtnClick}></div>
+          <div className={styles.clearIcon} onClick={handleClearBtnClick} data-testid="clear-button"></div>
         </div>
-        <Button onClick={handleSearchBtnClick}>Search</Button>
-      </div>
+        <Button type="submit">Search</Button>
+      </form>
     </>
   );
 }

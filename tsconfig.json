@@ -3,15 +3,15 @@
     "baseUrl": "./",
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["node", "jest", "@testing-library/jest-dom"],
     "module": "ESNext",
     "skipLibCheck": true,
-    /* Bundler mode */
+    "esModuleInterop": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

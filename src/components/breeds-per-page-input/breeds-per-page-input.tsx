@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, ReactElement } from 'react';
 
 import styles from './breeds-per-page-input.module.scss';
 
@@ -8,7 +8,7 @@ type BreedsPerPageInputProps = {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-function BreedsPerPageInput({ breedsPerPage, totalCount, handleChange }: BreedsPerPageInputProps): ReactNode {
+function BreedsPerPageInput({ breedsPerPage, totalCount, handleChange }: BreedsPerPageInputProps): ReactElement {
   const value = breedsPerPage < totalCount ? breedsPerPage : totalCount;
 
   return (

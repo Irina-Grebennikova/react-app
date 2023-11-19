@@ -1,20 +1,28 @@
-import { Breed } from '@/types';
+import { Breed, BreedResponse } from '@/types';
 
 const BASE_URL = 'https://api-dog-breeds.vercel.app';
 const BREEDS_PER_PAGE = 12;
 
+const getImageSrc = (pathToImage: string): string => `${BASE_URL}/${pathToImage}`;
+
 const dogBreedsApi = {
   totalCount: 0,
-  async getBreeds(breed: string, page = 1, limit = BREEDS_PER_PAGE): Promise<Breed[]> {
+  async getBreeds(breed: string, page = 1, limit = BREEDS_PER_PAGE): Promise<BreedResponse | null> {
     try {
       const response = await fetch(`${BASE_URL}/api/catalog?q=${breed}&_limit=${limit}&_page=${page}`);
-      this.totalCount = Number(response.headers.get('X-Total-Count'));
-
+      const totalCount = Number(response.headers?.get('X-Total-Count')) || 1;
       const data: unknown = await response.json();
-      return this.isBreedArray(data) ? data : [];
+      const results = this.isBreedArray(data)
+        ? data.map((item: Breed) => ({ ...item, image: getImageSrc(item.image) }))
+        : [];
+
+      return {
+        results,
+        totalCount,
+      };
     } catch (error) {
       console.error(error);
-      return [];
+      return null;
     }
   },
   async getBreed(breedId: number): Promise<Breed | null> {
@@ -22,7 +30,7 @@ const dogBreedsApi = {
       const response = await fetch(`${BASE_URL}/api/catalog/${breedId}`);
 
       const data: unknown = await response.json();
-      return this.isBreedObject(data) ? data : null;
+      return this.isBreedObject(data) ? { ...data, image: getImageSrc(data.image) } : null;
     } catch (error) {
       console.error(error);
       return null;
@@ -34,7 +42,6 @@ const dogBreedsApi = {
   isBreedObject(data: unknown): data is Breed {
     return !!(data as Breed).wool && !!(data as Breed).color && !!(data as Breed).group;
   },
-  getImageSrc: (pathToImage: string): string => `${BASE_URL}/${pathToImage}`,
 };
 
-export { dogBreedsApi, BREEDS_PER_PAGE };
+export { dogBreedsApi, BREEDS_PER_PAGE, BASE_URL };

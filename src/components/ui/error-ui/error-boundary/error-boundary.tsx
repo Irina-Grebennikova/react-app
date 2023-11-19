@@ -1,6 +1,6 @@
 import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
 
-import { FallbackUI } from './fallback-ui';
+import { FallbackUI } from '../fallback/fallback';
 
 class ErrorBoundary extends Component<PropsWithChildren> {
   state = {

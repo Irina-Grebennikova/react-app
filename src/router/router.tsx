@@ -5,22 +5,22 @@ import { ErrorBoundary } from '@/components/ui';
 import { NotFoundPage } from '@/pages/not-found-page';
 import { SearchPage } from '@/pages/search-page';
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route
-        path="/"
-        element={
-          <ErrorBoundary>
-            <SearchPage />
-          </ErrorBoundary>
-        }
-      >
-        <Route path="details" element={<DogBreedDetails />} />
-      </Route>
-      <Route path="*" element={<NotFoundPage />} />
+const routes = (
+  <Route>
+    <Route
+      path="/"
+      element={
+        <ErrorBoundary>
+          <SearchPage />
+        </ErrorBoundary>
+      }
+    >
+      <Route path="details" element={<DogBreedDetails />} />
     </Route>
-  )
+    <Route path="*" element={<NotFoundPage />} />
+  </Route>
 );
 
-export { router };
+const router = createBrowserRouter(createRoutesFromElements(routes));
+
+export { router, routes };

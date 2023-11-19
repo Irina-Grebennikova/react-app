@@ -18,7 +18,7 @@ class LocalStore {
   }
 
   public static setItem(key: string, value: JSONValue): void {
-    const stringValue = JSON.stringify(value);
+    const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
 
     localStorage.setItem(`${KEY_PREFIX}-${key}`, stringValue);
   }
@@ -28,4 +28,4 @@ class LocalStore {
   }
 }
 
-export { LocalStore };
+export { LocalStore, KEY_PREFIX };
