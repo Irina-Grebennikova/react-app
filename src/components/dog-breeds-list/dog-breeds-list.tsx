@@ -1,7 +1,7 @@
-import { Component, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import noResultsIcon from '@/assets/icons/nothing-found.png';
-import { Loader } from '@/components/loader';
+import { Loader } from '@/components/ui';
 import { Breed } from '@/types';
 
 import { DogBreedsListItem } from './dog-breeds-list-item';
@@ -12,26 +12,24 @@ type DogBreedsListProps = {
   isLoading: boolean;
 };
 
-class DogBreedsList extends Component<DogBreedsListProps> {
-  render(): ReactNode {
-    if (this.props.isLoading) {
-      return <Loader className={styles.loader} />;
-    } else if (this.props.breeds.length === 0) {
-      return (
-        <div className={styles.noResults}>
-          No results found
-          <img className={styles.noResultsIcon} src={noResultsIcon} alt="" />
-        </div>
-      );
-    }
+function DogBreedsList({ breeds, isLoading }: DogBreedsListProps): ReactNode {
+  if (isLoading) {
+    return <Loader className={styles.loader} />;
+  } else if (breeds.length === 0) {
     return (
-      <div className={styles.cards}>
-        {this.props.breeds.map((breed: Breed) => {
-          return <DogBreedsListItem key={breed.id} breed={breed} />;
-        })}
+      <div className={styles.noResults}>
+        No results found
+        <img className={styles.noResultsIcon} src={noResultsIcon} alt="" />
       </div>
     );
   }
+  return (
+    <div className={styles.cards}>
+      {breeds.map((breed: Breed) => {
+        return <DogBreedsListItem key={breed.id} breed={breed} />;
+      })}
+    </div>
+  );
 }
 
 export { DogBreedsList };

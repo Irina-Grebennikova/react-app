@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
@@ -8,63 +8,58 @@ import { Breed } from '@/types';
 import styles from './search.module.scss';
 
 type SearchProps = {
-  updateBreeds: (query: string) => Promise<Breed[]>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  updateBreeds: (query: string, page?: number) => Promise<Breed[]>;
+  showBreedsFromFirstPage: () => void;
 };
 
-class Search extends Component<SearchProps> {
-  state = {
-    searchQuery: LocalStore.getItem<string>('search-query') || '',
-  };
+function Search(props: SearchProps): ReactNode {
+  const { searchQuery, setSearchQuery, showBreedsFromFirstPage, updateBreeds } = props;
 
-  async componentDidMount(): Promise<void> {
-    await this.props.updateBreeds(this.state.searchQuery.trim());
-  }
-
-  render(): ReactNode {
-    return (
-      <>
-        <div className={styles.search}>
-          <div className={styles.inputBox}>
-            <img className={styles.searchIcon} src={magnifier} alt="Search"></img>
-            <input
-              className={styles.searchInput}
-              placeholder="Example: pug, labrador"
-              value={this.state.searchQuery}
-              onChange={this.updateSearchQuery}
-              onKeyDown={this.handleEnterPress}
-              autoFocus
-            />
-            <div className={styles.clearIcon} onClick={this.handleClearBtnClick}></div>
-          </div>
-          <Button onClick={this.handleSearchBtnClick}>Search</Button>
-        </div>
-      </>
-    );
-  }
-
-  private updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>): string => {
+  function updateSearchQuery(e: React.ChangeEvent<HTMLInputElement>): string {
     const newQuery = e.target.value;
-    this.setState({ searchQuery: newQuery });
+    setSearchQuery(newQuery);
     return newQuery;
-  };
+  }
 
-  private handleSearchBtnClick = (): void => {
-    const newQuery = this.state.searchQuery.trim();
+  function handleSearchBtnClick(): void {
+    const newQuery = searchQuery.trim();
     LocalStore.setItem('search-query', newQuery);
-    void this.props.updateBreeds(newQuery);
-  };
+    showBreedsFromFirstPage();
+  }
 
-  private handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  function handleEnterPress(e: React.KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Enter') {
-      void this.handleSearchBtnClick();
+      void handleSearchBtnClick();
     }
-  };
+  }
 
-  private handleClearBtnClick = (): void => {
-    this.setState({ searchQuery: '' });
+  function handleClearBtnClick(): void {
+    setSearchQuery('');
     LocalStore.removeItem('search-query');
-    void this.props.updateBreeds('');
-  };
+    void updateBreeds('', 1);
+  }
+
+  return (
+    <>
+      <div className={styles.search}>
+        <div className={styles.inputBox}>
+          <img className={styles.searchIcon} src={magnifier} alt="Search"></img>
+          <input
+            className={styles.searchInput}
+            placeholder="Example: pug, labrador"
+            value={searchQuery}
+            onChange={updateSearchQuery}
+            onKeyDown={handleEnterPress}
+            autoFocus
+          />
+          <div className={styles.clearIcon} onClick={handleClearBtnClick}></div>
+        </div>
+        <Button onClick={handleSearchBtnClick}>Search</Button>
+      </div>
+    </>
+  );
 }
 
 export { Search };

@@ -1,0 +1,47 @@
+@import '@/vars.module.scss';
+
+.pagination {
+  display: flex;
+  gap: clamp(10px, 2vw, 20px);
+  justify-content: center;
+  margin-top: clamp(20px, 3%, 30px);
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  height: 52px;
+  border: 2px solid $blue;
+  border-radius: 100px;
+  background-color: transparent;
+  color: inherit;
+  font-size: 20px;
+  line-height: 115%;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.current {
+    pointer-events: none;
+    background-color: $blue;
+  }
+
+  &.inactive {
+    pointer-events: none;
+    color: $lightGrey;
+    border-color: $lightGrey;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: $blue;
+      border-color: $blue;
+    }
+  }
+}
