@@ -3,8 +3,6 @@ import { PayloadAction, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { BREEDS_PER_PAGE, dogBreedsApi } from '@/api';
 import { LocalStore } from '@/helpers';
 
-import { RootState } from './store';
-
 const initialState = {
   breedId: Number(LocalStore.getItem('breed-id')) || 0,
   breedsPerPage: BREEDS_PER_PAGE,
@@ -53,8 +51,6 @@ const searchSlice = createSlice({
       });
   },
 });
-
-export const selectFromSearch = (state: RootState): RootState['search'] => state.search;
 
 export const { reducer: searchReducer } = searchSlice;
 export const { setBreedId, setBreedsPerPage, setSearchQuery, setCurrentPage, setIsDetailsOpen } = searchSlice.actions;

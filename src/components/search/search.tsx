@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import magnifier from '@/assets/icons/magnifier.svg';
 import { Button } from '@/components/ui';
 import { LocalStore } from '@/helpers';
-import { selectFromSearch, setSearchQuery } from '@/store';
+import { RootState, setSearchQuery } from '@/store';
 
 import styles from './search.module.scss';
 
@@ -13,7 +13,7 @@ type SearchProps = {
 };
 
 function Search({ setFirstPage }: SearchProps): ReactElement {
-  const { searchQuery } = useSelector(selectFromSearch);
+  const searchQuery = useSelector((state: RootState) => state.search.searchQuery);
 
   const dispatch = useDispatch();
 

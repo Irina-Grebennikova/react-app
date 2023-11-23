@@ -9,7 +9,7 @@ import { Search } from '@/components/search';
 import { Button } from '@/components/ui';
 import { Pagination } from '@/components/ui/pagination';
 import { LocalStore, classNames } from '@/helpers';
-import { selectFromSearch, setBreedsPerPage, setCurrentPage } from '@/store';
+import { RootState, setBreedsPerPage, setCurrentPage } from '@/store';
 
 import styles from './search-page.module.scss';
 
@@ -18,13 +18,11 @@ function SearchPage(): ReactElement {
 
   const [hasError, setHasError] = useState(false);
 
-  const {
-    breedsPerPage,
-    searchQuery,
-    currentPage,
-    isDetailsOpen,
-    isBreedsLoading: isLoading,
-  } = useSelector(selectFromSearch);
+  const breedsPerPage = useSelector((state: RootState) => state.search.breedsPerPage);
+  const searchQuery = useSelector((state: RootState) => state.search.searchQuery);
+  const currentPage = useSelector((state: RootState) => state.search.currentPage);
+  const isDetailsOpen = useSelector((state: RootState) => state.search.isDetailsOpen);
+  const isLoading = useSelector((state: RootState) => state.search.isBreedsLoading);
 
   const { data: response } = useGetBreedsQuery({
     query: searchQuery,
