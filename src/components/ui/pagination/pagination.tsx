@@ -10,9 +10,7 @@ type PaginationProps = {
   pageCount: number;
 };
 
-function Pagination(props: PaginationProps): ReactElement {
-  const { currentPage, pageCount } = props;
-
+function Pagination({ currentPage, pageCount }: PaginationProps): ReactElement {
   const isFirstPage = (): boolean => currentPage === 1;
   const isLastPage = (): boolean => currentPage === pageCount;
 

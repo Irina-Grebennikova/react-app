@@ -11,7 +11,7 @@ class LocalStore {
     }
 
     try {
-      return JSON.parse(value) as T;
+      return typeof value === 'string' ? (value as T) : (JSON.parse(value) as T);
     } catch {
       return null;
     }

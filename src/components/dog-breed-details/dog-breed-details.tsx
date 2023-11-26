@@ -1,33 +1,30 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { dogBreedsApi } from '@/api';
+import { useGetBreedQuery } from '@/api';
 import { Loader } from '@/components/ui';
-import { SearchPageContext } from '@/pages/search-page';
-import { Breed } from '@/types';
+import { RootState, setIsDetailsOpen } from '@/store';
 
 import styles from './dog-breed-details.module.scss';
 
 function DogBreedDetails(): JSX.Element {
-  const { breedId, setIsDetailsOpen } = useContext(SearchPageContext);
+  const breedId = useSelector((state: RootState) => state.search.breedId);
+  const isLoading = useSelector((state: RootState) => state.search.isDetailsLoading);
 
-  const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
-  const [breed, setBreed] = useState<Breed>();
+
+  const { data: breed } = useGetBreedQuery(breedId);
 
   const infoPanel = useRef<HTMLDivElement>(null);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    setIsDetailsOpen(true);
+    dispatch(setIsDetailsOpen(true));
 
     document.addEventListener('click', handleOutsideClick);
 
-    void dogBreedsApi.getBreed(breedId).then((breed) => {
-      if (breed) {
-        setBreed(breed);
-        setIsLoading(false);
-      }
-    });
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
@@ -41,7 +38,7 @@ function DogBreedDetails(): JSX.Element {
 
   const closeSidePanel = (): void => {
     setIsOpen(false);
-    setIsDetailsOpen(false);
+    dispatch(setIsDetailsOpen(false));
   };
 
   return (

@@ -1,46 +1,43 @@
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useSearchParams } from 'react-router-dom';
 
-import { BREEDS_PER_PAGE, dogBreedsApi } from '@/api';
+import { useGetBreedsQuery } from '@/api';
 import { BreedsPerPageInput } from '@/components/breeds-per-page-input';
 import { DogBreedsList } from '@/components/dog-breeds-list';
 import { Search } from '@/components/search';
 import { Button } from '@/components/ui';
 import { Pagination } from '@/components/ui/pagination';
 import { LocalStore, classNames } from '@/helpers';
-import { Breed } from '@/types';
+import { RootState, setBreedsPerPage, setCurrentPage } from '@/store';
 
-import { SearchPageContext } from './search-page-context';
 import styles from './search-page.module.scss';
 
 function SearchPage(): ReactElement {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [searchQuery, setSearchQuery] = useState(LocalStore.getItem<string>('search-query') || '');
-  const [breedsPerPage, setBreedsPerPage] = useState(BREEDS_PER_PAGE);
-  const [breeds, setBreeds] = useState<Breed[]>([]);
-  const [breedId, setBreedId] = useState(Number(LocalStore.getItem('breed-id')) || 0);
-  const [totalCount, setTotalCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [pageCount, setPageCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  const breedsPerPage = useSelector((state: RootState) => state.search.breedsPerPage);
+  const searchQuery = useSelector((state: RootState) => state.search.searchQuery);
+  const currentPage = useSelector((state: RootState) => state.search.currentPage);
+  const isDetailsOpen = useSelector((state: RootState) => state.search.isDetailsOpen);
+  const isLoading = useSelector((state: RootState) => state.search.isBreedsLoading);
+
+  const { data: response } = useGetBreedsQuery({
+    query: searchQuery,
+    page: currentPage,
+    limit: breedsPerPage,
+  });
+
+  const breeds = response?.results || [];
+  const totalCount = response?.totalCount || 1;
+
+  const pageCount = Math.ceil(totalCount / breedsPerPage);
 
   const getClassForWrapper = (): string => classNames(styles.wrapper, isDetailsOpen ? styles.noScroll : '');
 
-  const store = {
-    breeds,
-    breedId,
-    searchQuery,
-    currentPage,
-    isDetailsOpen,
-    setBreedId,
-    setSearchQuery,
-    setIsDetailsOpen,
-    updateBreeds,
-    showBreedsFromFirstPage,
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (hasError) {
@@ -52,76 +49,46 @@ function SearchPage(): ReactElement {
     const id = searchParams.get('id');
     let page = searchParams.get('page');
 
-    if (page === null || +page === 0) {
+    if (page === null) {
       page = LocalStore.getItem('current-page') || '1';
-      if (id) {
-        setSearchParams({ id, page });
-      } else {
-        setSearchParams({ page });
-      }
+
+      id ? setSearchParams({ id, page }) : setSearchParams({ page });
     }
-    const newCurrentPage = Number(page) || 1;
-
-    setCurrentPage(newCurrentPage);
-    LocalStore.setItem('current-page', newCurrentPage);
-    void updateBreeds(searchQuery.trim(), newCurrentPage);
+    dispatch(setCurrentPage(+page));
+    LocalStore.setItem('current-page', +page);
   }, [searchParams]);
-
-  async function updateBreeds(query: string, page = currentPage, itemsPerPage = breedsPerPage): Promise<Breed[]> {
-    setIsLoading(() => true);
-
-    const response = await dogBreedsApi.getBreeds(query, page, itemsPerPage);
-    const breeds = response?.results || [];
-    const nextTotalCount = response?.totalCount || 0;
-
-    setBreeds(breeds);
-    setIsLoading(() => false);
-    setCurrentPage(page);
-    setTotalCount(nextTotalCount);
-    setPageCount(Math.ceil(nextTotalCount / itemsPerPage));
-
-    return breeds;
-  }
 
   function onBreedsPerPageChange({ target }: ChangeEvent<HTMLInputElement>): void {
     const { value, max, min } = target;
     if (+value < +min || +value > +max) {
       return;
     }
-    const newBreedsPerPage = +value;
-    setBreedsPerPage(newBreedsPerPage);
-    showBreedsFromFirstPage(newBreedsPerPage);
+    dispatch(setBreedsPerPage(+value));
+    setFirstPage();
   }
 
-  function showBreedsFromFirstPage(itemsPerPage = breedsPerPage): void {
-    setSearchParams({ page: '1' });
-    if (currentPage === 1) {
-      void updateBreeds(searchQuery.trim(), 1, itemsPerPage);
-    }
-  }
+  const setFirstPage = (): void => setSearchParams({ page: '1' });
 
   return (
-    <SearchPageContext.Provider value={store}>
-      <div className={getClassForWrapper()}>
-        <div className={styles.searchPage}>
-          <header className={styles.header}>
-            <BreedsPerPageInput
-              breedsPerPage={breedsPerPage}
-              totalCount={totalCount}
-              handleChange={onBreedsPerPageChange}
-            />
-            <Button className={styles.errorBtn} color={'red'} onClick={(): void => setHasError(true)}>
-              Error
-            </Button>
-          </header>
-          <h1 className={styles.title}>Dog breeds</h1>
-          <Search />
-          <DogBreedsList isLoading={isLoading} />
-          {!isLoading && breeds.length > 0 && <Pagination currentPage={currentPage} pageCount={pageCount} />}
-        </div>
-        <Outlet />
+    <div className={getClassForWrapper()}>
+      <div className={styles.searchPage}>
+        <header className={styles.header}>
+          <BreedsPerPageInput
+            breedsPerPage={breedsPerPage}
+            totalCount={totalCount}
+            handleChange={onBreedsPerPageChange}
+          />
+          <Button className={styles.errorBtn} color={'red'} onClick={(): void => setHasError(true)}>
+            Error
+          </Button>
+        </header>
+        <h1 className={styles.title}>Dog breeds</h1>
+        <Search setFirstPage={setFirstPage} />
+        {<DogBreedsList isLoading={isLoading} breeds={breeds} />}
+        {!isLoading && breeds.length > 0 && <Pagination pageCount={pageCount} currentPage={currentPage} />}
       </div>
-    </SearchPageContext.Provider>
+      <Outlet />
+    </div>
   );
 }
 
