@@ -6,4 +6,4 @@ static/*
 scripts/*
 __mocks__
 support
-src/vite-env.d.ts
+next-env.d.ts

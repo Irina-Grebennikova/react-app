@@ -61,8 +61,10 @@
     "no-console": "off",
     "import/order": [
       "warn",
-      { "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"] }
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"]
+      }
     ]
   },
-  "ignorePatterns": ["vite.config.ts", "jest.config.ts"]
+  "ignorePatterns": ["next.config.js", "jest.config.ts"]
 }
