@@ -1,0 +1,9 @@
+.config
+node_modules/*
+config/*
+public/*
+static/*
+scripts/*
+__mocks__
+support
+next-env.d.ts
